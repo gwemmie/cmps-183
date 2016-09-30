@@ -10,3 +10,17 @@
 
 @import "constants";
 @import "main";
+
+$clrAlertBorder: #BDBDBD;
+$clrAlertBackground: #EFEFEF;
+
+.boxy-box {
+  @include border-radius(10px);
+  border: 3px solid $clrAlertBorder;
+  background-color: $clrAlertBackground;
+  display: inline;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 45px;
+  padding-right: 45px;
+}
