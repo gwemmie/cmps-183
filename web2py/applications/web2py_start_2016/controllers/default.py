@@ -8,17 +8,20 @@
 # - download is for downloading files uploaded in the db (does streaming)
 # -------------------------------------------------------------------------
 
+# This is defined in a module. See modules/random_text.py
+import random_text
 
 def index():
     """
-    example action using the internationalization operator T and flash
-    rendered by views/default/index.html or views/generic.html
-
-    if you need a simple wiki simply replace the two lines below with:
-    return auth.wiki()
+    You do not need to modify this page for hw1.  You just need to modify views/default/index.html
+    Functions with no arguments in controller files are used in web2py to define how web pages are
+    generated.
     """
-    response.flash = T("Hello World")
-    return dict(message=T('Welcome to web2py!'))
+    return dict(title=random_text.get_random_title(),
+                n=random_text.get_random_number(),
+                paragraph1=random_text.get_random_paragraph(),
+                paragraph2=random_text.get_random_paragraph(),
+                )
 
 
 def user():
@@ -57,5 +60,3 @@ def call():
     supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
     """
     return service()
-
-
