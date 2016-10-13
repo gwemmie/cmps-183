@@ -18,11 +18,32 @@
 {{pass}}
 
     <div class="post_list">
-    {{for p in posts:}}
-        <div class="post text-left">
-            <!-- Here goes the code to display an individual post. The code below is just a placeholder. -->
-            {{=p}}
-        </div>
+    {{if posts == 'none':}}
+        <div class="post text-left">No posts have been made yet.</div>
+    {{else:}}
+        {{for p in posts:}}
+            <div class="post text-left">
+                <p class="post_text">{{=p.post_content}}</p>
+                <table class="post_info" width="100%"><tr>
+                    <td width="25%">
+                        {{=get_user_name_from_email(p.user_email)}}
+                    </td>
+                    <td width="25%">
+                        {{=p.created_on.strftime('%Y-%m-%d %H:%M:%S')}}
+                    </td>
+                    <td width="25%">
+                        {{if p.created_on != p.updated_on:}}
+                            Edited on {{=p.updated_on.strftime('%Y-%m-%d %H:%M:%S')}}
+                        {{pass}}
+                    </td>
+                    <td width="25%">
+                        {{if auth.user_id and auth.user.email == p.user_email:}}
+                            <a href="{{=URL('default', 'edit', args=[p.id])}}">Edit</a>
+                        {{pass}}
+                    </td>
+                </tr></table>
+            </div>
+        {{pass}}
     {{pass}}
     </div>
 

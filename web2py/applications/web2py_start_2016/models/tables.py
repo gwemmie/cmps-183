@@ -23,4 +23,4 @@ db.post.created_on.readable = db.post.created_on.writable = False
 db.post.updated_on.readable = db.post.updated_on.writable = False
 
 # after defining tables, uncomment below to enable auditing
-# auth.enable_record_versioning(db)
+auth.enable_record_versioning(db)

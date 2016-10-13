@@ -21,3 +21,14 @@
   -webkit-border-radius: 16px;
   border-radius: 16px;
 }
+
+/* line 21, ../sass/_main.scss */
+.post_text {
+  font-size: large;
+}
+
+/* line 25, ../sass/_main.scss */
+.post_info {
+  font-size: normal;
+  color: #ACC5ED;
+}
