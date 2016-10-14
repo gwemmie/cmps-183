@@ -557,3 +557,10 @@
 127.0.0.1, 2016-10-05 13:54:05, GET, /admin/default/uninstall/test, HTTP/1.1, 200, 0.017909
 127.0.0.1, 2016-10-05 13:54:07, POST, /admin/default/uninstall/test, HTTP/1.1, 303, 0.201074
 127.0.0.1, 2016-10-05 13:54:07, GET, /admin/default/site, HTTP/1.1, 200, 0.025974
+127.0.0.1, 2016-10-13 14:20:57, GET, /, HTTP/1.1, 303, 0.000527
+127.0.0.1, 2016-10-13 14:20:57, GET, /welcome/default/index, HTTP/1.1, 200, 0.051070
+127.0.0.1, 2016-10-13 14:20:59, GET, /admin/default/site, HTTP/1.1, 303, 0.037002
+127.0.0.1, 2016-10-13 14:20:59, GET, /admin/default/index, HTTP/1.1, 200, 0.018060
+127.0.0.1, 2016-10-13 14:21:03, POST, /admin/default/index, HTTP/1.1, 303, 0.017146
+127.0.0.1, 2016-10-13 14:21:03, GET, /admin/default/site, HTTP/1.1, 200, 0.024418
+127.0.0.1, 2016-10-13 14:21:09, POST, /admin/default/check_version, HTTP/1.1, 200, 5.923903
