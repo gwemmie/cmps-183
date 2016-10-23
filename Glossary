@@ -1,0 +1,47 @@
+RHYTHM
+-different time signatures:
+Written as X/Y, where X is how many beats, and Y is what type of note counts as a beat (1 means whole notes, 2 means half notes, 4 means quarter notes, 8 means eighth notes, 16 means sixteenth notes, etc. Most common is 4/4 (duple). 2nd most common is 3/4 (triple). All other time signatures are also either duple or triple (i.e. don't feel any different from 4/4 or 3/4).
+-different types of notes:
+Whole note: 4 beats in X/4 time
+Half note: 2 beats in X/4 time
+Quarter note: 1 beat in X/4 time
+Eighth note: 0.5 beats in X/4 time
+Sixteenth note: 0.25 beats in X/4 time
+etc...
+
+NOTES
+-each note is a different pitch/frequency
+-Letters: A B C D E F G
+-Letter names have "accidentals"--notes that have "flat" (symbol: b) or "sharp" (symbol: #) next their name to indicate they aren't the same note. In other words, there are 12 tones that are represented by only 6 letters because the other 6 are accidentals. Each accidental has more than one name, because you can sharp the letter below it OR flat the letter above it. A note that is not an accidental is called natural (symbol: ♮) (zoom way in on your text editor to see that tiny symbol clearly)
+-But, there are 2 pairs of letters that don't have an accidental between then: B & C, and E & F. B# is C, Cb is B, E# is F, and Fb is E.
+-Tones: A A#/Bb B C C#/Db D D#/Eb E F F#/Gb G G#/Ab
+-The tones wrap back around: after G#/Ab is A again, then A#/Bb again, then etc. They have assigned numbers to keep track of this, but those numbers change at C, not A: ... A#1/Bb1 B1 C2 C#2/Db2 ... B2 C3 ... B3 C4 ... etc.
+-Each pair 12 tones apart is an octave: C1 and C2 are octaves, F#4 and F#5 are octaves, etc. An octave sounds like the same note, just higher/lower.
+-a half-step (misleading name) goes up 1 single tone: B to C, A# to B, Gb to G, etc.
+-a whole step goes up 2 tones: C to D, A to B, E to F# (because E# is just F), etc.
+-Major scale:
+-pick any note (called the Tonic), and from that note, take the following sequence of steps: Whole-Whole-Half-Whole-Whole-Whole-Half
+-C major: C D E F G A B C (note that C major has no accidentals)
+-A major: A B C# D E F# G# A
+-Bb major: Bb C D Eb F G A Bb
+-In major scales, the next step must always be the next letter. Example: the note after B in A major must be C#, not Db (even though they're the same note), because C comes after B in the alphabet. Another example: the note after D in Bb major must be Eb, not D#. Consequently, a major scale's accidentals will always be flat if the Tonic is flat (like Bb), or sharp if the tonic is not flat (so either sharp or natural).
+
+INTERVALS
+-You've already learned one interval: an octave. The intervals all follow the scale. So, if you have:
+-C1 major: C1 D1 E1 F1 G1 A1 B1 C2
+-C1 and C2 are called octaves because C2 is the 8th note in C major (oct- prefix means 8). The proper intervalic name is P8.
+-The P stands for Perfect. Perfect intervals are the same in every scale. 1, 4, 5 and 8 are all Perfect: P1 P4, P5, and P8. In a C scale, that's C, F, G, and C. (Note: P1 is called Perfect Unison, not Perfect One or Perfect First, because it's the same note as the tonic. They're a unison.)
+-The others are called Major intervals in a major scale, and are not the same notes in other types of scales (like minor). For intervals and chords, uppercase M stands for major, while lowercase m stands for minor. So, D1 is M2 or Major Second, E1 is M3 or Major Third, etc.
+-B1 is M7, Major Seventh, but can also be called the Leading Tone, because it "leads" into that last C2. A note is called a leading tone if it's the 7th (2nd-last) note in the scale AND a half-step away from the 8th.
+-So the major intervals go P1, M2, M3, P4, P5, M6, M7, P8.
+-The point of remembering intervals is being able to point out how far away notes are. Instead of saying A is 4.5 steps (Whole-Whole-Half-Whole-Whole) away from C, you can say it's the M6 of C. When you're used to it, it's much easier/quicker to remember that relationship than count out the steps between them.
+-Dealing with intervals, ESPECIALLY if you're just hearing them without seeing anything or playing it yourself, or just playing them without seeing anything or hearing it yourself, is extremely hard compared to everything else over the first several chapters of this website, despite being just as vital to get the hang of. Students will be spending much more time on that Practice game than anything else, so we should make sure they know that and that the random generation can keep it fresh for a while.
+
+ELEMENTS OF MUSIC:
+-The first sentence of each is the basic definition that'll appear in the fill-in-the-blanks quiz:
+-Rhythm: the speed and timing of the sound(s). You've already read a whole section on this. Rhythm can be much more free and dynamic than quarter notes and time signatures, though.
+-Melody: the part of the song you walk away from remembering, and especially which notes that part covers. It doesn't *have* to be the catchy vocalist's line. Music can be just the sound of a train approaching, and in that case, the melody would be the part of that sound that you unconsciously focus on the most.
+-Harmony: the part(s) of the song that accompany the melody, that you might not remember as well, and the notes they cover. Music doesn't *have* to have harmony in it at all, but it kinda always does if you get deep enough with what you define as a separate note (like, the melody of that approaching train could be the horn, while the harmony could be the chuga-chuga of the wheels).
+-Timbre: the "color" of the sound, that defines or at least hints at what instrument made the sound. For example, a trumpet clearly sounds like a different object than a bass guitar. Timbre is that phenomenon. Pronounced tam-ber.
+-Texture: How the layers of the sound are used and related. There are 3 main answers to "What is the texture of this song?" - monophonic, homophonic, and polyphonic. Monophonic means the song is nothing but a single melody with no accompiment. Homophonic means there is an accompaniment. Polyphonic means there is more than one melody, and whether there's *also* an accompaniment is irrelevant. Examples: that approaching train could be defined as monophonic if you say there's no harmony, or homophonic otherwise (pretty subjective). Stuff like ancient Gregorian monk chants, or a song that's just one flute doing one melody, are monophonic. Most music is homophonic: one melody, and chords or drums or both. Lots of complex music, like jazz or metal, is polyphonic, like if 2 instruments are doing 2 solos that at the same time that at least kind of clash with each other.
+-Dynamics: basically, the volume of the sound(s), and more specifically, the relative loudness. Relative loudness just means how loud a specific instrument's part at a specific moment is compared to the song's average volume. Written music has Latin words for that stuff, like piano, forte, etc., but there's no way we'll get that far in one quarter.
