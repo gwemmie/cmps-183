@@ -1,3 +1,5 @@
+Google Image search anything here to see what it looks like in written music.
+
 RHYTHM
 -different time signatures:
 Written as X/Y, where X is how many beats, and Y is what type of note counts as a beat (1 means whole notes, 2 means half notes, 4 means quarter notes, 8 means eighth notes, 16 means sixteenth notes, etc. Most common is 4/4 (duple). 2nd most common is 3/4 (triple). All other time signatures are also either duple or triple (i.e. don't feel any different from 4/4 or 3/4).
@@ -8,11 +10,12 @@ Quarter note: 1 beat in X/4 time
 Eighth note: 0.5 beats in X/4 time
 Sixteenth note: 0.25 beats in X/4 time
 etc...
+-speed of the song is called tempo; standard tempo is 120BPM (beats per minute, so 2 beats per second)
 
 NOTES
 -each note is a different pitch/frequency
 -Letters: A B C D E F G
--Letter names have "accidentals"--notes that have "flat" (symbol: b) or "sharp" (symbol: #) next their name to indicate they aren't the same note. In other words, there are 12 tones that are represented by only 6 letters because the other 6 are accidentals. Each accidental has more than one name, because you can sharp the letter below it OR flat the letter above it. A note that is not an accidental is called natural (symbol: ♮) (zoom way in on your text editor to see that tiny symbol clearly)
+-Letter names have "accidentals"--notes that have "flat" (symbol: b) or "sharp" (symbol: #) next their name to indicate they aren't the same note. In other words, there are 12 tones that are represented by only 7 letters because the other 5 are accidentals. Each accidental has more than one name, because you can sharp the letter below it OR flat the letter above it. A note that is not an accidental is called natural (symbol: ♮) (zoom way in on your text editor to see that tiny symbol clearly)
 -But, there are 2 pairs of letters that don't have an accidental between then: B & C, and E & F. B# is C, Cb is B, E# is F, and Fb is E.
 -Tones: A A#/Bb B C C#/Db D D#/Eb E F F#/Gb G G#/Ab
 -The tones wrap back around: after G#/Ab is A again, then A#/Bb again, then etc. They have assigned numbers to keep track of this, but those numbers change at C, not A: ... A#1/Bb1 B1 C2 C#2/Db2 ... B2 C3 ... B3 C4 ... etc.
@@ -37,7 +40,20 @@ INTERVALS
 -The point of remembering intervals is being able to point out how far away notes are. Instead of saying A is 4.5 steps (Whole-Whole-Half-Whole-Whole) away from C, you can say it's the M6 of C. When you're used to it, it's much easier/quicker to remember that relationship than count out the steps between them.
 -Dealing with intervals, ESPECIALLY if you're just hearing them without seeing anything or playing it yourself, or just playing them without seeing anything or hearing it yourself, is extremely hard compared to everything else over the first several chapters of this website, despite being just as vital to get the hang of. Students will be spending much more time on that Practice game than anything else, so we should make sure they know that and that the random generation can keep it fresh for a while.
 
-ELEMENTS OF MUSIC:
+KEY SIGNATURES
+-a convenient way to make a song you're writing follow a specific scale (the vast majority of songs follow one specific scale, and ALL music that uses pitch spends almost 100% of the time following some specific scale, even if which scale that is changes a lot), by replacing you having to write a bunch of accidental signs everywhere with those accidental signs just being at the beginning of the song and always counting whenever that letter shows up
+-Example: if the key signature has a # symbol on C, then whenever C shows up in that song, it means C#, instead of what it would normally mean: C♮. So, you don't have to write out the # on every C that's supposed to be #, and instead have to write out the ♮ on every C that's supposed to be natural, if there are any. So, if you were writing a melody that only ever uses notes from the C# scale, you'd never have to write C# or C♮, because every C would be C# (since C♮ isn't in the C# scale) and you already put that in the key signature.
+-There's a key signature for each major scale, and only each major scale (not including some of the sharps): 15 total
+-Why 15, not 12? There's one for each of the 7 natural tones, one for each of the 6 flats, and F# and C#.
+-Why don't the other sharps' major scales get key signatures? Because the other sharps' major scales have "double-sharp" accidentals, something that you didn't learn about and don't need to right now. And this is easier, because there's a quick method that lets you make all 15 key signatures with a LOT less memorization, and adding the other sharps would've ruined that.
+-Each key signature has either 0 accidentals (C major), 1-7 sharps, or 1-7 flats. There is no key signature with sharps AND flats, or with more than 7 of each.
+-Memorize this sequence: BEADGCF. Maybe turn it into an acronym, like "Bead Greatest Common Factor". If you don't memorize it, just remember it follows the circle of fourths, starting with B. That means it goes up a P4 over and over. B->P4=E->P4=A->P4=D etc. Think about it.
+-BEADGCF is the order the accidentals are written in (yes, written music is strict about that). So, if a key signature has Bb, Eb, and Ab in it, they're written in that order. For sharps, it goes backwards. So it goes F#, C#, G#, D#, etc. Every key signature goes in that order. There is no key signature that has C# but not F#, or Db but not Ab. So if you memorize BEADGCF, you can recreate any key signature just by remembering how many sharps or flats were in it. Example: Eb major has 3 flats, so it must be Bb Eb Ab.
+-But you can use BEADGCF to recreate every key signature (except for C, which you should just remember is empty, and F, which you'll have to memorize is just Bb) even more easily than that. Just remember two rules:
+-If the key name is flat, then the amount of flats it has is (its position in BEADGCF) + 1. Example: D is 4th in BEADGCF, so Db has 4+1=5 flats: Bb Eb Ab Db Gb. So, you can try to remember F by reasoning that its position + 1 overflows back to B, so it just has Bb.
+-If the key name is not flat (so, sharp or natural), then the amount of sharps (yes, natural key signatures that aren't C or F always have sharps) it has follows FCGDAEB (BEADGCF backwards, i.e. following the circle of fifths from F). First find the leading tone (i.e. M7) of that key name (by going one half-step down from it). Now, find said leading tone in that backwards/fifths sequence, FCGDAEB. The key signature's sharps is everything leading up to that leading tone. Example: E major's leading tone is D#, so E's key signature is BEADGCF, backwards, up to and including D: F# C# G# D#. So, you can also memorize that C and F don't follow this rule because they're the only two notes whose leading tones are not accidentals (B and E, respectively).
+
+ELEMENTS OF MUSIC
 -The first sentence of each is the basic definition that'll appear in the fill-in-the-blanks quiz:
 -Rhythm: the speed and timing of the sound(s). You've already read a whole section on this. Rhythm can be much more free and dynamic than quarter notes and time signatures, though.
 -Melody: the part of the song you walk away from remembering, and especially which notes that part covers. It doesn't *have* to be the catchy vocalist's line. Music can be just the sound of a train approaching, and in that case, the melody would be the part of that sound that you unconsciously focus on the most.
