@@ -17,3 +17,12 @@
   padding: 20px;
   @include border-radius(16px);
 }
+
+.post_text {
+  font-size: large;
+}
+
+.post_info {
+  font-size: normal;
+  color: #ACC5ED;
+}
