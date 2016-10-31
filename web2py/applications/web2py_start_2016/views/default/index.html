@@ -1,21 +1,91 @@
 {{extend 'layout.html'}}
+<!-- Tons of code in here was taken from lecture examples. -->
 
 {{block head}}
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 <script>
-    var get_posts_url = "{{=URL('api', 'get_posts', user_signature=True)}}";
+    var posts_url = "{{=URL('api', 'get_posts')}}";
     var add_post_url = "{{=URL('api', 'add_post', user_signature=True)}}";
+    var edit_post_url = "{{=URL('api', 'edit_post', user_signature=True)}}";
     var del_post_url = "{{=URL('api', 'del_post', user_signature=True)}}";
 </script>
 {{end}}
 
 <div class="main_content">
 
-    <div id="vue-div" class="display:none">
-        <!-- Your code goes here.  Remember to call $("#vue-div").show() once you get the data for the first time. -->
-    </div>
+    <div id="vue-div" class="display:none post_listing center">
 
-</div>
+        <div class="button_bar">
+            <button v-if="!is_adding_post" class="btn btn-danger btn-sm" v-on:click="add_post_button()" v-bind:class="{'disabled': !logged_in}">
+                Add new post
+            </button>
+            <button v-if="is_adding_post" class="btn btn-warning btn-sm" v-on:click="add_post_button()">
+                Cancel
+            </button>
+        </div>
+
+        <div v-if="is_adding_post" id="add-new-post">
+            <form action="#" v-on:submit.prevent="add_post" class="form-horizontal" enctype="multipart/form-data" method="post">
+                <div class="form-group" id="no_table_post_content__row">
+                    <div>
+                        <input class="form-control string" id="no_table_post_content" name="post_content" type="text" v-model="form_post_content" placeholder="post_content"/>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="form-group" id="submit_record__row">
+                    <div>
+                        <input class="btn btn-primary post-button" id="add-new-post-submit" type="submit" value="Post" />
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="post_list">
+            <div v-for="post in posts" class="post-content">
+                <div v-if="!post.is_editing_post" class="post text-left" id="showing-post">
+                    <p class="post_text">${post.post_content}</p>
+                    <table class="post_info" width="100%"><tr>
+                        <td width="25%">
+                            ${post.user_name}
+                        </td>
+                        <td width="25%">
+                            ${post.created_on}
+                        </td>
+                        <td width="25%" v-if="post.created_on != post.updated_on">
+                            Edited on ${post.updated_on}
+                        </td>
+                        <td width="12%">
+                            <i class="fa fa-pencil-o" v-on:click="edit_post_button(post.id)" v-bind:class="{'disabled': !my_post()"></i>
+                        </td>
+                        <td width="12%">
+                            <i class="fa fa-trash-o" v-on:click="delete_post(post.id)" v-bind:class="{'disabled': !my_post()"></i>
+                        </td>
+                    </tr></table>
+                </div>
+                <div v-else id="editing-post">
+                    <form action="#" v-on:submit.prevent="edit_post(post.id)" class="form-horizontal" enctype="multipart/form-data" method="post">
+                        <div class="form-group" id="no_table_post_content__row">
+                            <div>
+                                <input class="form-control string" id="no_table_post_content" name="post_content" type="text" v-model="form_post_content" placeholder="post_content"/>
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                        <div class="form-group" id="submit_record__row">
+                            <div>
+                                <button v-if="post.is_editing_post" class="btn btn-warning btn-sm" v-on:click="edit_post_button()">
+                                    Cancel
+                                </button>
+                                <input class="btn btn-primary post-button" id="edit-post-submit" type="submit" value="Post" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div v-if="has_more" class="show_more">
+                <button class="btn btn-default" v-on:click="get_more()" id="load-more">Load more</button>
+            </div>
+        </div>
+    </div>
 
 </div>
 

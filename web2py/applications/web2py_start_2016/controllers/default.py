@@ -8,35 +8,11 @@
 # - download is for downloading files uploaded in the db (does streaming)
 # -------------------------------------------------------------------------
 
-def get_user_name_from_email(email):
-    """Returns a string corresponding to the user first and last names,
-    given the user email."""
-    u = db(db.auth_user.email == email).select().first()
-    if u is None:
-        return 'None'
-    else:
-        return ' '.join([u.first_name, u.last_name])
-
-
 def index():
     """
     This is your main controller.  Here you do almost nothing; you just cause index.html to be served.
     """
-    """
-    Code from last assignment. Might come in handy? If you see this commented out, grader, sorry, I meant to use or delete it.
-    post_list = []
-    i = 0
-    for row in db().select(db.post.ALL, orderby=~db.post.created_on):
-        post_list.append(row)
-        i += 1
-        if i >= 20:
-            break
-    if not post_list:
-        return dict(posts='none')
-    else:
-        return dict(posts=post_list, get_user_name_from_email = get_user_name_from_email)
-    """
-    return dict(get_user_name_from_email=get_user_name_from_email)
+    return dict()
 
 
 @auth.requires_login()
