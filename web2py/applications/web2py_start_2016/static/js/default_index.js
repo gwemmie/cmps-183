@@ -26,15 +26,6 @@ var app = function() {
         return idx; // error code would be -1: post not found
     }
 
-    // Makes sure current user is allowed to edit/delete post
-    self.my_post = function (post_id) {
-        var idx = self.get_post(post_id);
-        if (idx != -1 && self.vue.posts[idx].user_email == self.vue.user_email) {
-            return true;
-        }
-        return false;
-    }
-
     function get_posts_url(start_idx, end_idx) {
         var pp = {
             start_idx: start_idx,
@@ -44,26 +35,29 @@ var app = function() {
     }
 
     self.get_posts = function () {
-        $.getJSON(get_posts_url(0, 3), function (data) {
+        $.getJSON(get_posts_url(0, 4), function (data) {
             self.vue.posts = data.posts;
             self.vue.logged_in = data.logged_in;
             self.vue.has_more = data.has_more;
-            self.vue.user_id = data.user_id;
-            self.vue.user_email = data.user_email;
         })
     };
 
-    self.get_more = function () {
+    self.get_more_variable = function (amount) {
         var num_posts = self.vue.posts.length;
-        $.getJSON(get_posts_url(num_posts, num_posts + 3), function (data) {
+        $.getJSON(get_posts_url(num_posts, num_posts + amount), function (data) {
             self.vue.has_more = data.has_more;
             self.extend(self.vue.posts, data.posts);
         });
+    }
+
+    self.get_more = function () {
+        return get_more_variable(4);
     };
 
     self.add_post_button = function () {
         // The button to add a post has been pressed.
-        self.vue.is_adding_post = !self.vue.is_adding_post;
+        if (self.vue.logged_in) self.vue.is_adding_post = !self.vue.is_adding_post;
+        self.vue.form_post_content = "";
     };
 
     self.add_post = function () {
@@ -71,22 +65,39 @@ var app = function() {
         var date = Date.now();
         $.post(add_post_url,
             {
-                user_email: self.vue.user_email,
-                post_content: self.vue.form_post_content,
-                created_on: date,
-                updated_on: date
+                post_content: self.vue.form_post_content
             },
             function (data) {
                 $.web2py.enableElement($("#add-new-post-submit"));
+                self.vue.form_post_content = "";
+                data.post.is_editing_post = false;
+                data.post.is_mine = true;
+                data.post.user_name = data.user_name;
                 self.vue.posts.unshift(data.post);
-            });
+                if (self.vue.posts.length > 4) self.vue.posts.pop();
+                self.vue.posts[idx].is_editing_post = false;
+            }
+        );
     };
 
-    self.edit_post_button = function (post_id) {
+    self.edit_post_button_pressed = function (post_id) {
         // The button to edit a post has been pressed.
+        if (self.vue.is_editing_post) return;
         var idx = self.get_post(post_id);
         if (idx > -1) {
-            self.vue.posts[idx].is_editing_post = !self.vue.posts[idx].is_editing_post;
+            self.vue.posts[idx].is_editing_post = true;
+            self.vue.form_post_content = self.vue.posts[idx].post_content;
+            self.vue.is_editing_post = true;
+        }
+    };
+
+    self.edit_post_button_unpressed = function (post_id) {
+        // The button to edit a post has been unpressed.
+        if (!self.vue.is_editing_post) return;
+        self.vue.is_editing_post = false;
+        var idx = self.get_post(post_id);
+        if (idx > -1) {
+            self.vue.posts[idx].is_editing_post = false;
         }
     };
 
@@ -99,19 +110,16 @@ var app = function() {
             $.post(edit_post_url,
                 {
                     post_id: post_id,
-                    // Bug/feature: if one ever disables the check that
-                    // post_id belongs to the current user, editing will
-                    // overwrite that post's email with the new editer's
-                    // because I decided to not get user_email from the
-                    // original self.vue.posts[idx].user_email.
-                    user_email: self.vue.user_email,
-                    post_content: self.vue.form_post_content,
-                    created_on: created_on_original,
-                    updated_on: date
+                    post_content: self.vue.form_post_content
                 },
                 function (data) {
                     $.web2py.enableElement($("#edit-post-submit"));
+                    self.vue.posts[idx].is_editing_post = false;
+                    data.post.is_editing_post = false;
+                    data.post.is_mine = true;
+                    data.post.user_name = data.user_name;
                     self.vue.posts.splice(idx, 1, data.post);
+                    self.vue.is_editing_post = false;
                 }
             );
         }
@@ -126,6 +134,7 @@ var app = function() {
                 var idx = self.get_post(post_id);
                 if (idx > -1) {
                     self.vue.posts.splice(idx, 1);
+                    self.get_more_variable(1);
                 }
             }
         )
@@ -138,11 +147,10 @@ var app = function() {
         unsafeDelimiters: ['!{', '}'],
         data: {
             is_adding_post: false,
+            is_editing_post: false,
             posts: [],
             logged_in: false,
             has_more: false,
-            user_id: null,
-            user_email: null,
             form_post_content: null
         },
         methods: {
@@ -150,7 +158,8 @@ var app = function() {
             add_post_button: self.add_post_button,
             add_post: self.add_post,
             my_post: self.my_post,
-            edit_post_button: self.edit_post_button,
+            edit_post_button_pressed: self.edit_post_button_pressed,
+            edit_post_button_unpressed: self.edit_post_button_unpressed,
             edit_post: self.edit_post,
             delete_post: self.delete_post
         }
