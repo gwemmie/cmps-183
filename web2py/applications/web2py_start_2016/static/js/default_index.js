@@ -69,7 +69,7 @@ var app = function() {
             },
             function (data) {
                 $.web2py.enableElement($("#add-new-post-submit"));
-                self.vue.form_post_content = "";
+                self.add_post_button();
                 data.post.is_editing_post = false;
                 data.post.is_mine = true;
                 data.post.user_name = data.user_name;
