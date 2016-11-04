@@ -1,4 +1,4 @@
-timestamp: 2016-10-30T11:34:36.635463
+timestamp: 2016-11-03T17:46:07.711611
 CREATE TABLE web2py_session_web2py_start_2016(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     locked CHAR(1),
@@ -9,7 +9,7 @@ CREATE TABLE web2py_session_web2py_start_2016(
     session_data BLOB
 );
 success!
-timestamp: 2016-10-30T11:34:36.733576
+timestamp: 2016-11-03T17:46:07.783395
 CREATE TABLE auth_user(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     first_name CHAR(128),
@@ -21,21 +21,21 @@ CREATE TABLE auth_user(
     registration_id CHAR(512)
 );
 success!
-timestamp: 2016-10-30T11:34:36.816376
+timestamp: 2016-11-03T17:46:07.857669
 CREATE TABLE auth_group(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     role CHAR(512),
     description TEXT
 );
 success!
-timestamp: 2016-10-30T11:34:36.951406
+timestamp: 2016-11-03T17:46:07.949731
 CREATE TABLE auth_membership(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
     group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE  
 );
 success!
-timestamp: 2016-10-30T11:34:37.050763
+timestamp: 2016-11-03T17:46:08.025217
 CREATE TABLE auth_permission(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE  ,
@@ -44,7 +44,7 @@ CREATE TABLE auth_permission(
     record_id INTEGER
 );
 success!
-timestamp: 2016-10-30T11:34:37.151014
+timestamp: 2016-11-03T17:46:08.125633
 CREATE TABLE auth_event(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     time_stamp TIMESTAMP,
@@ -54,7 +54,7 @@ CREATE TABLE auth_event(
     description TEXT
 );
 success!
-timestamp: 2016-10-30T11:34:37.293045
+timestamp: 2016-11-03T17:46:08.209358
 CREATE TABLE auth_cas(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
@@ -64,7 +64,7 @@ CREATE TABLE auth_cas(
     renew CHAR(1)
 );
 success!
-timestamp: 2016-10-30T11:34:37.386185
+timestamp: 2016-11-03T17:46:08.302509
 CREATE TABLE post(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_email CHAR(512),

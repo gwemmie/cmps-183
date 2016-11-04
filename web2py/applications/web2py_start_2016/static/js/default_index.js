@@ -51,8 +51,19 @@ var app = function() {
     }
 
     self.get_more = function () {
-        return get_more_variable(4);
+        self.vue.current_max += 4;
+        return self.get_more_variable(4);
     };
+
+    self.check_more = function() {
+        if (self.vue.posts.length > self.vue.current_max) {
+            self.vue.posts.pop();
+            self.vue.has_more = true;
+        } else if (self.vue.posts.length < self.vue.current_max) {
+            self.get_more_variable(self.vue.current_max - self.vue.posts.length);
+        }
+
+    }
 
     self.add_post_button = function () {
         // The button to add a post has been pressed.
@@ -74,8 +85,7 @@ var app = function() {
                 data.post.is_mine = true;
                 data.post.user_name = data.user_name;
                 self.vue.posts.unshift(data.post);
-                if (self.vue.posts.length > 4) self.vue.posts.pop();
-                self.vue.posts[idx].is_editing_post = false;
+                self.check_more();
             }
         );
     };
@@ -134,7 +144,7 @@ var app = function() {
                 var idx = self.get_post(post_id);
                 if (idx > -1) {
                     self.vue.posts.splice(idx, 1);
-                    self.get_more_variable(1);
+                    self.check_more();
                 }
             }
         )
@@ -150,6 +160,7 @@ var app = function() {
             is_editing_post: false,
             posts: [],
             logged_in: false,
+            current_max: 4,
             has_more: false,
             form_post_content: null
         },
