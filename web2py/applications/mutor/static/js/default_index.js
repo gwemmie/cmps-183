@@ -28,8 +28,74 @@ var app = function() {
     // Add a clef and time signature.
     stave.addClef("treble").addTimeSignature("4/4");
 
+    // Add notes
+    var notes = [
+        // A quarter-note C.
+        new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "q" }),
+
+        // A quarter-note D.
+        new VF.StaveNote({clef: "treble", keys: ["d/4"], duration: "q" }),
+
+        // A quarter-note rest. Note that the key (b/4) specifies the vertical
+        // position of the rest.
+        new VF.StaveNote({clef: "treble", keys: ["b/4"], duration: "qr" }),
+
+        // A C-Major chord.
+        new VF.StaveNote({clef: "treble", keys: ["c/4", "e/4", "g/4"], duration: "q" })
+    ];
+
+    var voice = new VF.Voice({num_beats: 4,  beat_value: 4});
+    voice.addTickables(notes);
+
+    var formatter = new VF.Formatter().joinVoices([voice]).format([voice], 400);
+
     // Connect it to the rendering context and draw!
     stave.setContext(context).draw();
+
+    voice.draw(context, stave);
+
+    var highlightNote = function(note, stave, ctx, x) {
+        new VF.TickContext().addTickable(note).preFormat().setX(x);
+        var item = note.getElem();
+        /* each note:
+         * Y position = renderer.<some jQuery function to get exact Y position> or maybe context
+         * X position = first stave arg + note's child's child's child <path> tag--getAttribute: x\
+         * note's child's child (the last <g>): appendChild(rect)
+         */
+        Vex.forEach($(item).find("*"), function(child) {
+                var highlight = document.createElement("rect");
+                highlight.setAttribute("width", "25");
+                highlight.setAttribute("height", "100");
+                highlight.setAttribute("style", "fill:rgb(0,0,255);stroke-width:10;stroke:rgb(0,0,0)");
+                child.appendChild(highlight);
+                //child.setAttribute("fill", "green");
+                //child.setAttribute("stroke", "green");
+        });
+    };
+
+    for (var i = 0; i < notes.length; ++i) {
+        var note = notes[i];
+        highlightNote(note, stave, context, i * 100);
+
+        // If this is an interactivity test, then attempt to attach mouseover
+        // and mouseout handlers to the notes.
+/*        if (options.params.ui) {
+          var item = staveNote.getAttribute('el');
+          item.addEventListener('mouseover', function() {
+            Vex.forEach($(this).find('*'), function(child) {
+              child.setAttribute('fill', 'green');
+              child.setAttribute('stroke', 'green');
+            });
+          }, false);
+          item.addEventListener('mouseout', function() {
+            Vex.forEach($(this).find('*'), function(child) {
+              child.setAttribute('fill', 'black');
+              child.setAttribute('stroke', 'black');
+            });
+          }, false);
+        }*/
+    }
+
 
 
     return self;
