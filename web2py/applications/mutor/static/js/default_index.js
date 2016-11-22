@@ -61,6 +61,8 @@ var app = function() {
          * Y position = renderer.<some jQuery function to get exact Y position> or maybe context
          * X position = first stave arg + note's child's child's child <path> tag--getAttribute: x\
          * note's child's child (the last <g>): appendChild(rect)
+         *
+         * also, make /default and /default/index redirect to /
          */
         Vex.forEach($(item).find("*"), function(child) {
                 var highlight = document.createElement("rect");
