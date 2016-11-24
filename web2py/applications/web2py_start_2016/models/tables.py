@@ -9,7 +9,14 @@
 
 import datetime
 
-# Product table.
+db.define_table('orders',
+    Field('user'),
+    Field('created_on', 'datetime', default=datetime.datetime.utcnow()),
+    Field('order_json', 'text') # Order information, in json
+)
+
+"""
+Product table. Probably not needed for this assignment.
 db.define_table('product',
     Field('product_name'),
     Field('quantity', 'integer'),
@@ -18,13 +25,17 @@ db.define_table('product',
     Field('description', 'text'),
 )
 db.product.id.readable = db.product.id.writable = False
+"""
 
+"""
+Alternate version of orders database. Probably not needed for this assignment.
 db.define_table('customer_order',
     Field('order_date', default=datetime.datetime.utcnow()),
     Field('customer_info', 'blob'),
     Field('transaction_token', 'blob'),
     Field('cart', 'blob'),
 )
+"""
 
 # Let's define a secret key for stripe transactions.
 from gluon.utils import web2py_uuid

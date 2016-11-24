@@ -6,16 +6,25 @@
 # -------------------------------------------------------------------------
 
 import traceback
+import requests
 
+
+@auth.requires_login()
 def index():
-    """
-    I am not doing anything here.  Look elsewhere.
-    """
-    return dict()
+    # Get list of products from teacher's server
+    r = requests.get("http://luca-teaching.appspot.com/get_products")
+    products = r.json()['products']
+    # Sample code from teacher that may come in handy
+    #for p in products['products']:
+    #    p.desired_quantity = min(1, p.quantity)
+    #    p.cart_quantity = 0
+    return response.json(dict(products=products))
 
 
+"""
+Gets the list of products, possibly in response to a query.
+Probably not needed for this assignment.
 def get_products():
-    """Gets the list of products, possibly in response to a query."""
     t = request.vars.q.strip()
     if request.vars.q:
         q = ((db.product.name.contains(t)) |
@@ -31,10 +40,13 @@ def get_products():
     return response.json(dict(
         products=products,
     ))
+"""
 
 
+"""
+Ajax function called when a customer orders and pays for the cart.
+Probably not needed for this assignment.
 def purchase():
-    """Ajax function called when a customer orders and pays for the cart."""
     if not URL.verify(request, hmac_key=session.hmac_key):
         raise HTTP(500)
     # Creates the charge.
@@ -59,8 +71,12 @@ def purchase():
         transaction_token=json.dumps(token),
         cart=request.vars.cart)
     return "ok"
+"""
 
 
+"""
+Function for product management.
+Probably not needed for this assignment.
 # Normally here we would check that the user is an admin, and do programmatic
 # APIs to add and remove products to the inventory, etc.
 @auth.requires_login()
@@ -77,6 +93,7 @@ def product_management():
         details=True,
     )
     return dict(form=form)
+"""
 
 
 @auth.requires_login()
