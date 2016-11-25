@@ -2,10 +2,10 @@
 
 {{block head}}
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
-<script src="https://checkout.stripe.com/checkout.js"></script>
 <script>
-    var products_url = "{{=URL('default', 'get_products')}}";
-    var purchase_url = "{{=URL('default', 'purchase', hmac_key=session.hmac_key)}}"
+    var products_url = "{{=URL('default', 'index')}}";
+    var purchase_url = "{{=URL('default', 'purchase', hmac_key=session.hmac_key)}}";
+    var orders_url = "{{=URL('default', 'view_orders')}}";
 </script>
 {{end}}
 
@@ -24,9 +24,15 @@
                     <button class="btn orange" v-on:click="goto('cart')">
                         <i class="fa fa-lg fa-shopping-cart"></i> ${cart_size}
                     </button>
+                    <button class="btn orange" v-on:click="goto('orders')">
+                        <i class="fa fa-lg fa-clock-o"></i>
+                    </button>
                 </span>
                 <span v-if="page=='cart'">
                     <button class="btn" v-on:click="goto('prod')"> Continue shopping </button>
+                    <button class="btn orange" v-on:click="goto('orders')">
+                        <i class="fa fa-lg fa-clock-o"></i>
+                    </button>
                 </span>
             </div>
         </div>
@@ -87,6 +93,14 @@
                 Your total price: $ ${cart_total}
                 <button class="btn blue" v-on:click="pay()"><i class="fa fa-lg fa-credit-card"></i> Pay</button>
             </div>
+        </div>
+
+        <div v-if="page=='orders'" id="order_list">
+            <button class="btn" v-on:click="goto('prod')"> Continue shopping </button>
+            <button class="btn orange" v-on:click="goto('cart')">
+                <i class="fa fa-lg fa-shopping-cart"></i> ${cart_size}
+            </button>
+            ${orders_form}
         </div>
 
     </div>

@@ -12,7 +12,7 @@ import datetime
 db.define_table('orders',
     Field('user'),
     Field('created_on', 'datetime', default=datetime.datetime.utcnow()),
-    Field('order_json', 'text') # Order information, in json
+    Field('cart', 'blob')
 )
 
 """

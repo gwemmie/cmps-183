@@ -40,6 +40,21 @@ var app = function() {
         self.update_cart();
     };
 
+    self.view_orders = function() {
+        $.getJSON(orders_url, $.param({q: self.vue.product_search}), function(data) {
+            self.vue.orders_form = data.form;
+            self.vue.user = data.user;
+        });
+    };
+
+    self.do_search = function() {
+        if (page == 'prod') {
+            return self.get_products();
+        } else if (page == 'orders') {
+            return self.view_orders();
+        } else return
+    };
+
     self.inc_desired_quantity = function(product_idx, qty) {
         // Inc and dec to desired quantity.
         var p = self.vue.products[product_idx];
@@ -95,44 +110,14 @@ var app = function() {
         self.store_cart();
     };
 
-    self.customer_info = {}
-
     self.goto = function (page) {
         self.vue.page = page;
-        if (page == 'cart') {
-            // prepares the form.
-            self.stripe_instance = StripeCheckout.configure({
-                key: 'pk_test_CeE2VVxAs3MWCUDMQpWe8KcX',    //put your own publishable key here
-                image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
-                locale: 'auto',
-                token: function(token, args) {
-                    console.log('got a token. sending data to localhost.');
-                    self.stripe_token = token;
-                    self.customer_info = args;
-                    self.send_data_to_server();
-                }
-            });
-        };
-
-    };
-
-    self.pay = function () {
-        self.stripe_instance.open({
-            name: "Your nice cart",
-            description: "Buy cart content",
-            billingAddress: true,
-            shippingAddress: true,
-            amount: Math.round(self.vue.cart_total * 100),
-        });
     };
 
     self.send_data_to_server = function () {
-        console.log("Payment for:", self.customer_info);
-        // Calls the server.
         $.post(purchase_url,
             {
-                customer_info: JSON.stringify(self.customer_info),
-                transaction_token: JSON.stringify(self.stripe_token),
+                user: self.vue.user,
                 amount: self.vue.cart_total,
                 cart: JSON.stringify(self.vue.cart),
             },
@@ -152,11 +137,13 @@ var app = function() {
         delimiters: ['${', '}'],
         unsafeDelimiters: ['!{', '}'],
         data: {
+            user: '',
             products: [],
             cart: [],
             product_search: '',
             cart_size: 0,
             cart_total: 0,
+            orders_form: '',
             page: 'prod'
         },
         methods: {
@@ -165,14 +152,14 @@ var app = function() {
             inc_cart_quantity: self.inc_cart_quantity,
             buy_product: self.buy_product,
             goto: self.goto,
-            do_search: self.get_products,
-            pay: self.pay
+            do_search: self.do_search
         }
 
     });
 
     self.get_products();
     self.read_cart();
+    self.view_orders();
     $("#vue-div").show();
 
 
