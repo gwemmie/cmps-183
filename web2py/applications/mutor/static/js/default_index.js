@@ -54,8 +54,8 @@ var app = function() {
 
     voice.draw(context, stave);
 
-    var highlightNote = function(note, stave, ctx, x) {
-        new VF.TickContext().addTickable(note).preFormat().setX(x);
+    var highlightNote = function(note) {
+        new VF.TickContext().addTickable(note).preFormat();
         var item = note.getElem();
         Vex.forEach($(item).find("path"), function(child) {
             child.setAttribute("fill", "red");
@@ -65,7 +65,9 @@ var app = function() {
 
     for (var i = 0; i < notes.length; ++i) {
         var note = notes[i];
-        //highlightNote(note, stave, context, i * 100);
+        if (i == 0 || i == 2) {
+            highlightNote(note);
+        }
 
         // If this is an interactivity test, then attempt to attach mouseover
         // and mouseout handlers to the notes.
