@@ -57,27 +57,15 @@ var app = function() {
     var highlightNote = function(note, stave, ctx, x) {
         new VF.TickContext().addTickable(note).preFormat().setX(x);
         var item = note.getElem();
-        /* each note:
-         * Y position = renderer.<some jQuery function to get exact Y position> or maybe context
-         * X position = first stave arg + note's child's child's child <path> tag--getAttribute: x
-         * note's child's child (the last <g>): appendChild(rect)
-         *
-         * also, make /default and /default/index redirect to /
-         */
-        Vex.forEach($(item).find("*"), function(child) {
-                var highlight = document.createElement("rect");
-                highlight.setAttribute("width", "25");
-                highlight.setAttribute("height", "100");
-                highlight.setAttribute("style", "fill:rgb(0,0,255);stroke-width:10;stroke:rgb(0,0,0)");
-                child.appendChild(highlight);
-                //child.setAttribute("fill", "green");
-                //child.setAttribute("stroke", "green");
+        Vex.forEach($(item).find("path"), function(child) {
+            child.setAttribute("fill", "red");
+            child.setAttribute("stroke", "red");
         });
     };
 
     for (var i = 0; i < notes.length; ++i) {
         var note = notes[i];
-        highlightNote(note, stave, context, i * 100);
+        //highlightNote(note, stave, context, i * 100);
 
         // If this is an interactivity test, then attempt to attach mouseover
         // and mouseout handlers to the notes.
