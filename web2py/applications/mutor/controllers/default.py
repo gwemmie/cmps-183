@@ -6,10 +6,15 @@ def download(): return response.download(request,db)
 def call(): return service()
 ### end requires
 
+
 def index():
     return dict()
 
 
 def error():
+    return dict()
+
+
+def lesson1_1():
     return dict()
 
