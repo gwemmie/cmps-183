@@ -11,6 +11,7 @@ var app = function() {
         }
     };
 
+    var playing = false;
     VF = Vex.Flow;
 
     //maps vextab notes to midi numbers using associative array
@@ -300,6 +301,7 @@ var app = function() {
     };
 
     var playNote = function(note, duration, accidentals) {
+	if (playing == false) return;
         if (duration <= 0) return "duration is " + duration;
         highlightNote(note);
         //var midi = MIDI.player;
@@ -390,6 +392,7 @@ var app = function() {
     //function delay(ms) { var start_time = Date.now(); while (Date.now() - start_time < ms); }
 
     var playStaff = function(notes, noteAccidentals /*optional*/, key /*optional*/, tempo /*optional*/, ties /*optional*/) {
+	if (playing == false) return;
         // DO NOT pass in a normal ties list as an argument. Make an
         // array, where each index i's value j is what note i is tied
         // to, but j is not i. So, if i and j are tied together, then
@@ -402,6 +405,7 @@ var app = function() {
         // duration of a quarter note in quarter-seconds:
         var q = 120 / (tempo * 2) * 4;
         for (var i = 0; i < notes.length; i++) {
+	    if (playing == false) return;
             var note = notes[i];
             if (typeof ties === 'undefined' || ties[i] < 0) {
 		if (typeof noteAccidentals !== 'undefined') {
@@ -506,7 +510,13 @@ var app = function() {
     voice.draw(context, stave);
 
     // examples/tests are here
-    playStaff(notes, noteAccidentals);
+    play = function() {
+	playing = true;
+	return playStaff(notes, noteAccidentals);
+    };
+    stop = function() {
+	playing = false;
+    };
 
 /*
     for (var i = 0; i < notes.length; ++i) {

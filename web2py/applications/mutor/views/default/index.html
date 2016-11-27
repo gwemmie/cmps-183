@@ -22,10 +22,13 @@
 <script>
     <!-- var tracks_url = "{{=URL('api', 'get_tracks')}}"; -->
     <!-- var add_track_url = "{{=URL('api', 'add_track', user_signature=True)}}"; -->
+    var play = null;
+    var stop = null;
 </script>
 {{end}}
 
 <div id="boo" class="main_content">
+<a href="javascript:play();">Play</a>&nbsp;&nbsp;&nbsp;<a href="javascript:stop();">Stop</a>
 <!-- VexTab example
   <div class="vex-tabdiv"
       width=680 scale=1.0 editor="true"
