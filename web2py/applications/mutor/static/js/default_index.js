@@ -11,6 +11,14 @@ var app = function() {
         }
     };
 
+    // Enumerates an array.
+    var enumerate = function(v) {
+        var k=0;
+        return v.map(function(e) {e._idx = k++;});
+    };
+
+    Vue.config.silent = false; // show all warnings
+
     var playing = false;
     VF = Vex.Flow;
 
@@ -439,21 +447,76 @@ var app = function() {
         }
     };
 
-    // Test staff
-    // Create an SVG renderer and attach it to the DIV element named "boo".
-    var div = document.getElementById("boo");
-    var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
 
-    // Configure the rendering context.
-    renderer.resize(500, 500);
-    var context = renderer.getContext();
-    context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
+  /*all of the code for displaying staff and testing note playing
+    moved into this one function in order for me to work on Home Page without
+    encountering errors*/
+    var testStaff = function () {
+        // Test staff
+        // Create an SVG renderer and attach it to the DIV element named "boo".
+        var div = document.getElementById("boo");
+        var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
 
-    // Create a stave of width 400 at position 10, 40 on the canvas.
-    var stave = new VF.Stave(10, 40, 400);
+        // Configure the rendering context.
+        renderer.resize(500, 500);
+        var context = renderer.getContext();
+        context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
 
-    // Add a clef and time signature.
-    stave.addClef("treble").addTimeSignature("4/4");
+        // Create a stave of width 400 at position 10, 40 on the canvas.
+        var stave = new VF.Stave(10, 40, 400);
+
+        // Add a clef and time signature.
+        stave.addClef("treble").addTimeSignature("4/4");
+
+            var newAccid = makeNewAccid(VF);
+
+        // Add notes
+        var notes = [
+            // A quarter-note C.
+            new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "q" }),
+
+            // A quarter-note D.
+            new VF.StaveNote({clef: "treble", keys: ["d/4"], duration: "q" }),
+
+            // A quarter-note rest. Note that the key (b/4) specifies the vertical
+            // position of the rest.
+            new VF.StaveNote({clef: "treble", keys: ["b/4"], duration: "qr" }),
+
+            // A C-Major chord.
+            new VF.StaveNote({clef: "treble", keys: ["c/4", "e/4", "g/4"], duration: "q" })
+	        .addAccidental(0, newAccid('n'))
+	        .addAccidental(1, newAccid('b'))
+	        .addAccidental(2, newAccid('#'))
+        ];
+
+        // We have to manually keep list of accidentals, because the way
+        // VexFlow stores them is a garbled mess (just an unhelpful array
+        // of numbers).
+        // We'll also have to manually keep track of the fact that if an
+        // accidental is rendered once, it applies to every subsequent time
+        // that note appears in that measure. For example, if you have
+        // |----|Ab--A|A---|, then that 2nd A will also get a 'b' in
+        // noteAccidentals, but the 3rd A will not, and both 2nd and 3rd As
+        // will *not* get an .addAccidental('b').
+        var noteAccidentals = [];
+        for (var i = 0; i < notes.length; ++i) {
+	    noteAccidentals[i] = [];
+	    for (var j = 0; j < notes[i].keys.length; ++j)
+	        noteAccidentals[i][j] = '';
+        }
+        noteAccidentals[3] = ['n', 'b', '#'];
+
+        var voice = new VF.Voice({num_beats: 4,  beat_value: 4});
+        voice.addTickables(notes);
+
+        var formatter = new VF.Formatter().joinVoices([voice]).format([voice], 400);
+
+        // Connect it to the rendering context and draw!
+        stave.setContext(context).draw();
+
+        voice.draw(context, stave);
+
+    };
 
     // Helper functions for accidentals
     function makeNewAccid(factory) {
@@ -461,53 +524,7 @@ var app = function() {
 	  return new factory.Accidental(accidType);
 	};
     }
-    var newAccid = makeNewAccid(VF);
 
-    // Add notes
-    var notes = [
-        // A quarter-note C.
-        new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "q" }),
-
-        // A quarter-note D.
-        new VF.StaveNote({clef: "treble", keys: ["d/4"], duration: "q" }),
-
-        // A quarter-note rest. Note that the key (b/4) specifies the vertical
-        // position of the rest.
-        new VF.StaveNote({clef: "treble", keys: ["b/4"], duration: "qr" }),
-
-        // A C-Major chord.
-        new VF.StaveNote({clef: "treble", keys: ["c/4", "e/4", "g/4"], duration: "q" })
-	    .addAccidental(0, newAccid('n'))
-	    .addAccidental(1, newAccid('b'))
-	    .addAccidental(2, newAccid('#'))
-    ];
-
-    // We have to manually keep list of accidentals, because the way
-    // VexFlow stores them is a garbled mess (just an unhelpful array
-    // of numbers).
-    // We'll also have to manually keep track of the fact that if an
-    // accidental is rendered once, it applies to every subsequent time
-    // that note appears in that measure. For example, if you have
-    // |----|Ab--A|A---|, then that 2nd A will also get a 'b' in
-    // noteAccidentals, but the 3rd A will not, and both 2nd and 3rd As
-    // will *not* get an .addAccidental('b').
-    var noteAccidentals = [];
-    for (var i = 0; i < notes.length; ++i) {
-	noteAccidentals[i] = [];
-	for (var j = 0; j < notes[i].keys.length; ++j)
-	    noteAccidentals[i][j] = '';
-    }
-    noteAccidentals[3] = ['n', 'b', '#'];
-
-    var voice = new VF.Voice({num_beats: 4,  beat_value: 4});
-    voice.addTickables(notes);
-
-    var formatter = new VF.Formatter().joinVoices([voice]).format([voice], 400);
-
-    // Connect it to the rendering context and draw!
-    stave.setContext(context).draw();
-
-    voice.draw(context, stave);
 
     // examples/tests are here
     play = function() {
@@ -516,6 +533,15 @@ var app = function() {
     };
     stop = function() {
 	playing = false;
+    };
+
+    self.get_profiles = function () {
+        $.getJSON(get_profiles_url, function (data) {
+            self.vue.profiles = data.profiles
+            self.vue.has_more = data.has_more;
+            self.vue.logged_in = data.logged_in;
+            enumerate(self.vue.profiles);
+        })
     };
 
 /*
@@ -544,6 +570,21 @@ var app = function() {
         }
     }
 */
+	    self.vue = new Vue({
+        el: "#vue-div",
+        delimiters: ['${', '}'],
+        unsafeDelimiters: ['!{', '}'],
+        data: {
+            profiles: []
+
+        },
+        methods: {
+
+        }
+
+    });
+
+        $("#vue-div").show();
 
 
     return self;

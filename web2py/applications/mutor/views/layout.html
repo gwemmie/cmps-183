@@ -22,6 +22,7 @@
     <!-- include stylesheets -->
     <link rel="stylesheet" href="{{=URL('static','css/bootstrap.min.css')}}"/>
     <link rel="stylesheet" href="{{=URL('static','css/web2py-bootstrap3.css')}}"/>
+      <link rel="stylesheet" href="{{=URL('static','css/myapp.css')}}"/>
     <link rel="shortcut icon" href="{{=URL('static','images/favicon.ico')}}" type="image/x-icon">
     <link rel="apple-touch-icon" href="{{=URL('static','images/favicon.png')}}">
     <!-- All JavaScript at the bottom, except for Modernizr which enables
@@ -57,11 +58,18 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
+               <a class="navbar-brand" rel="home" href="{{=URL('default', 'index', args=['index'])}}" title="">
+                <img style="width:250px; height:100px; margin-top: -25px;"
+                    src="{{=URL('static', 'images', args='Mutor_logo.png')}}" />
+                </a>
+
           {{=response.logo or ''}}
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav navbar-right">
-            {{='auth' in globals() and auth.navbar('Welcome',mode='dropdown') or ''}}
+            <!-- {{='auth' in globals() and auth.navbar('Welcome',mode='dropdown') or ''}} -->
+              <a class="button" href="{{=URL('default', 'user', args=['login'])}}">LOG IN</a>
+              <a class="button" href="{{=URL('default','Lesson_index.html')}}">LESSONS</a>
           </ul>
           {{if response.menu:}}
           {{=MENU(response.menu, _class='nav navbar-nav',li_class='dropdown',ul_class='dropdown-menu')}}

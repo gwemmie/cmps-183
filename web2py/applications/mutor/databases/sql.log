@@ -53,3 +53,21 @@ CREATE TABLE auth_cas(
     renew CHAR(1)
 );
 success!
+timestamp: 2016-11-27T17:09:34.260000
+CREATE TABLE user_info(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_email CHAR(512),
+    created_on TIMESTAMP,
+    user_name CHAR(512),
+    lessons_completed TEXT
+);
+success!
+timestamp: 2016-11-27T17:54:46.319000
+CREATE TABLE profiles(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_email CHAR(512),
+    created_on TIMESTAMP,
+    user_name CHAR(512),
+    lessons_completed TEXT
+);
+success!

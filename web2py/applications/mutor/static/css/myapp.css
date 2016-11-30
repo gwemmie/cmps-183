@@ -1,0 +1,72 @@
+/* line 2, ../sass/_main.scss */
+.post_listing {
+  margin: 10px 0px 10px 0px;
+  padding: 0 0 0 0px;
+}
+
+/* line 7, ../sass/_main.scss */
+.post_list {
+  padding-top: 10px;
+}
+
+/* line 11, ../sass/_main.scss */
+/*
+.post {
+  border-color: #cccccc;
+  border-style: solid;
+  border-width: 1px;
+  background: #eeeeee;
+  margin: 20px 0px 20px 0px;
+  padding: 20px;
+  -moz-border-radius: 16px;
+  -webkit-border-radius: 16px;
+  border-radius: 16px;
+}*/
+
+#mutorHome h1 {
+  color:#957141;
+  text-align:center;
+}
+
+i {
+  display: inline-block;
+  margin-right: 10em;
+}
+
+img {
+    display: block;
+    margin: 0 auto;
+}
+
+.button {
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    padding: 12px 24px;
+    border: 1px solid #775a34;
+    border-radius: 8px;
+    background: #c29355;
+    background: -webkit-gradient(linear, left top, left bottom, from(#c29355), to(#775a34));
+    background: -moz-linear-gradient(top, #c29355, #775a34);
+    background: linear-gradient(to bottom, #c29355, #775a34);
+    text-shadow: #4b3921 1px 1px 1px;
+    font: normal normal bold 20px arial;
+    color: #ffffff;
+    text-decoration: none;
+}
+.button:hover,
+.button:focus {
+    border: 1px solid #957141;
+    background: #e9b066;
+    background: -webkit-gradient(linear, left top, left bottom, from(#e9b066), to(#8f6c3e));
+    background: -moz-linear-gradient(top, #e9b066, #8f6c3e);
+    background: linear-gradient(to bottom, #e9b066, #8f6c3e);
+    color: #ffffff;
+    text-decoration: none;
+}
+.button:active {
+    background: #775a34;
+    background: -webkit-gradient(linear, left top, left bottom, from(#775a34), to(#775a34));
+    background: -moz-linear-gradient(top, #775a34, #775a34);
+    background: linear-gradient(to bottom, #775a34, #775a34);
+}
