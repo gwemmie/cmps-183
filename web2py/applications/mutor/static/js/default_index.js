@@ -20,7 +20,47 @@ var app = function() {
 
     Vue.config.silent = false; // show all warnings
 
-    var playing = false;
+    self.get_profiles = function () {
+        $.getJSON(get_profiles_url, function (data) {
+            self.vue.profiles = data.profiles
+            self.vue.has_more = data.has_more;
+            self.vue.logged_in = data.logged_in;
+            enumerate(self.vue.profiles);
+        })
+    };
+
+    var setPage = function(page, lesson /*optional*/) {
+	self.vue.page = page;
+	if (typeof lesson !== 'undefined') self.vue.lesson = lesson;
+	if (page == 'test') testStaff();
+    };
+
+    self.vue = new Vue({
+        el: "#vue-div",
+        delimiters: ['${', '}'],
+        unsafeDelimiters: ['!{', '}'],
+        data: {
+            profiles: [],
+	    page: masterPage,
+	    playing: false,
+	    lesson: 0
+        },
+        methods: {
+	    setPage: setPage
+        }
+    });
+    self.vue_link = new Vue({
+	el: "#vue-link",
+        delimiters: ['${', '}'],
+        unsafeDelimiters: ['!{', '}'],
+        data: {
+	    page: masterPage
+        },
+        methods: {
+	    setPage: setPage
+        }
+    });
+
     VF = Vex.Flow;
 
     //maps vextab notes to midi numbers using associative array
@@ -310,7 +350,7 @@ var app = function() {
     };
 
     var playNote = function(note, duration, accidentals) {
-	if (playing == false) return;
+	if (self.vue.playing == false) return;
         if (duration <= 0) return "duration is " + duration;
         highlightNote(note);
         //var midi = MIDI.player;
@@ -329,8 +369,8 @@ var app = function() {
 			    var velocity = 127; // how hard the note hits
 			    // play the note
 			    MIDI.setVolume(0, 127, 0.75);
-			    MIDI.chordOn(0, note, velocity, delay);
-			    MIDI.chordOff(0, note, delay + 1);
+			    MIDI.chordOn(0, note, velocity, 0);
+			    MIDI.chordOff(0, note, delay);
 		    }
 	    });
 
@@ -401,7 +441,7 @@ var app = function() {
     //function delay(ms) { var start_time = Date.now(); while (Date.now() - start_time < ms); }
 
     var playStaff = function(notes, noteAccidentals /*optional*/, key /*optional*/, tempo /*optional*/, ties /*optional*/) {
-	if (playing == false) return;
+	if (self.vue.playing == false) return;
         // DO NOT pass in a normal ties list as an argument. Make an
         // array, where each index i's value j is what note i is tied
         // to, but j is not i. So, if i and j are tied together, then
@@ -411,18 +451,25 @@ var app = function() {
         // set default arguments:
         tempo = typeof tempo !== 'undefined' ? tempo : 120;
         key = typeof key !== 'undefined' ? key : 'C';
+	var startTime = new Date();
+	var totalDuration = 0;
         // duration of a quarter note in quarter-seconds:
         var q = 120 / (tempo * 2) * 4;
         for (var i = 0; i < notes.length; i++) {
-	    if (playing == false) return;
+	    if (self.vue.playing == false) return;
             var note = notes[i];
+	    var duration = calculateDuration (note.duration, q);
+	    totalDuration += duration;
+	    var endTime = new Date(startTime.getMilliseconds() + (totalDuration / 4.0 * 1000));
+	    // wait until specified time:
+	    setTimeout(function(){}, endTime.getMilliseconds() - (new Date()).getMilliseconds());
             if (typeof ties === 'undefined' || ties[i] < 0) {
 		if (typeof noteAccidentals !== 'undefined') {
-		    playNote (note, calculateDuration (note.duration, q), calculateKey(note, noteAccidentals[i], key));
+		    playNote (note, duration, calculateKey(note, noteAccidentals[i], key));
 		} else {
 		    var accidentals = [];
 		    for (var j = 0; j < notes[i].keys.length; ++j) accidentals[j] = '';
-		    playNote (note, calculateDuration (note.duration, q), calculateKey(note, accidentals, key));
+		    playNote (note, duration, calculateKey(note, accidentals, key));
 		}
             } else { /* tied notes have not been implemented yet because
                         it would have been pretty much as massive a job
@@ -524,11 +571,11 @@ var app = function() {
         voice.draw(context, stave);
 
 	play = function() {
-	    playing = true;
+	    self.vue.playing = true;
 	    return playStaff(notes, noteAccidentals);
 	};
 	stop = function() {
-	    playing = false;
+	    self.vue.playing = false;
 	};
     };
 
@@ -560,49 +607,8 @@ var app = function() {
     }
 */
 
-    self.get_profiles = function () {
-        $.getJSON(get_profiles_url, function (data) {
-            self.vue.profiles = data.profiles
-            self.vue.has_more = data.has_more;
-            self.vue.logged_in = data.logged_in;
-            enumerate(self.vue.profiles);
-        })
-    };
-
-    var setPage = function(page, lesson /*optional*/) {
-	self.vue.page = page;
-	if (typeof lesson !== 'undefined') self.vue.lesson = lesson;
-	if (page == 'test') testStaff();
-    };
-
-    self.vue = new Vue({
-        el: "#vue-div",
-        delimiters: ['${', '}'],
-        unsafeDelimiters: ['!{', '}'],
-        data: {
-            profiles: [],
-	    page: masterPage,
-	    lesson: 0
-        },
-        methods: {
-	    setPage: setPage
-        }
-    });
-    self.vue_link = new Vue({
-	el: "#vue-link",
-        delimiters: ['${', '}'],
-        unsafeDelimiters: ['!{', '}'],
-        data: {
-	    page: masterPage
-        },
-        methods: {
-	    setPage: setPage
-        }
-    });
-
     $("#vue-div").show();
     $("#vue-link").show();
-
 
     return self;
 };
