@@ -13558,3 +13558,10 @@
 127.0.0.1, 2016-12-02 11:41:10, GET, /mutor/static/images/twitter.png, HTTP/1.1, 304, 0.000254
 127.0.0.1, 2016-12-02 11:41:10, GET, /mutor/static/images/facebook.png, HTTP/1.1, 304, 0.000250
 127.0.0.1, 2016-12-02 11:41:10, GET, /mutor/static/images/gplus-32.png, HTTP/1.1, 304, 0.000236
+127.0.0.1, 2016-12-02 11:47:25, GET, /, HTTP/1.1, 200, 0.011701
+127.0.0.1, 2016-12-02 11:47:25, GET, /mutor/static/css/bootstrap.min.css, HTTP/1.1, 304, 0.000281
+127.0.0.1, 2016-12-02 11:47:25, GET, /mutor/static/css/myapp.css, HTTP/1.1, 304, 0.000175
+127.0.0.1, 2016-12-02 11:47:25, GET, /mutor/static/js/vue.js, HTTP/1.1, 304, 0.000180
+127.0.0.1, 2016-12-02 11:47:25, GET, /mutor/static/images/Mutor_logo.png, HTTP/1.1, 304, 0.000332
+127.0.0.1, 2016-12-02 11:47:25, GET, /mutor/static/images/furElise.gif, HTTP/1.1, 304, 0.000228
+127.0.0.1, 2016-12-02 11:47:25, GET, /mutor/static/js/default_index.js, HTTP/1.1, 304, 0.000166
