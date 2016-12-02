@@ -31,6 +31,7 @@
     <div v-if="page == 'test'" id="boo">
         <a href="javascript:play();">Play</a>&nbsp;&nbsp;&nbsp;<a href="javascript:stop();">Stop</a>
     </div>
+    <a href="#" v-on:click="setPage('test')">test page (this link shouldn't be in the final project)</a>
     <div v-if="page == 'home'" id="mutorHome">
         <h1>Learn About Music Theory the Cool Way</h1>
         <br>

@@ -523,33 +523,16 @@ var app = function() {
 
         voice.draw(context, stave);
 
+	play = function() {
+	    playing = true;
+	    return playStaff(notes, noteAccidentals);
+	};
+	stop = function() {
+	    playing = false;
+	};
     };
-
 
     // examples/tests are here
-    play = function() {
-	playing = true;
-	return playStaff(notes, noteAccidentals);
-    };
-    stop = function() {
-	playing = false;
-    };
-
-    self.get_profiles = function () {
-        $.getJSON(get_profiles_url, function (data) {
-            self.vue.profiles = data.profiles
-            self.vue.has_more = data.has_more;
-            self.vue.logged_in = data.logged_in;
-            enumerate(self.vue.profiles);
-        })
-    };
-
-    var setPage = function(page, lesson /*optional*/) {
-	self.vue.page = page;
-	if (page == 'test') testStaff();
-	if (typeof lesson !== 'undefined') self.vue.lesson = lesson;
-    };
-
 /*
     for (var i = 0; i < notes.length; ++i) {
         var note = notes[i];
@@ -576,6 +559,22 @@ var app = function() {
         }
     }
 */
+
+    self.get_profiles = function () {
+        $.getJSON(get_profiles_url, function (data) {
+            self.vue.profiles = data.profiles
+            self.vue.has_more = data.has_more;
+            self.vue.logged_in = data.logged_in;
+            enumerate(self.vue.profiles);
+        })
+    };
+
+    var setPage = function(page, lesson /*optional*/) {
+	self.vue.page = page;
+	if (typeof lesson !== 'undefined') self.vue.lesson = lesson;
+	if (page == 'test') testStaff();
+    };
+
     self.vue = new Vue({
         el: "#vue-div",
         delimiters: ['${', '}'],
