@@ -3,6 +3,7 @@
 var app = function() {
 
     var self = {};
+    var masterPage = 'home';
 
     // Extends an array
     self.extend = function(a, b) {
@@ -447,6 +448,14 @@ var app = function() {
         }
     };
 
+    // Helper functions for accidentals
+    function makeNewAccid(factory) {
+	return function(accidType) {
+	  return new factory.Accidental(accidType);
+	};
+    }
+    var newAccid = makeNewAccid(VF);
+
 
   /*all of the code for displaying staff and testing note playing
     moved into this one function in order for me to work on Home Page without
@@ -467,8 +476,6 @@ var app = function() {
 
         // Add a clef and time signature.
         stave.addClef("treble").addTimeSignature("4/4");
-
-            var newAccid = makeNewAccid(VF);
 
         // Add notes
         var notes = [
@@ -518,13 +525,6 @@ var app = function() {
 
     };
 
-    // Helper functions for accidentals
-    function makeNewAccid(factory) {
-	return function(accidType) {
-	  return new factory.Accidental(accidType);
-	};
-    }
-
 
     // examples/tests are here
     play = function() {
@@ -542,6 +542,12 @@ var app = function() {
             self.vue.logged_in = data.logged_in;
             enumerate(self.vue.profiles);
         })
+    };
+
+    var setPage = function(page, lesson /*optional*/) {
+	self.vue.page = page;
+	if (page == 'test') testStaff();
+	if (typeof lesson !== 'undefined') self.vue.lesson = lesson;
     };
 
 /*
@@ -570,21 +576,33 @@ var app = function() {
         }
     }
 */
-	    self.vue = new Vue({
+    self.vue = new Vue({
         el: "#vue-div",
         delimiters: ['${', '}'],
         unsafeDelimiters: ['!{', '}'],
         data: {
-            profiles: []
-
+            profiles: [],
+	    page: masterPage,
+	    lesson: 0
         },
         methods: {
-
+	    setPage: setPage
         }
-
+    });
+    self.vue_link = new Vue({
+	el: "#vue-link",
+        delimiters: ['${', '}'],
+        unsafeDelimiters: ['!{', '}'],
+        data: {
+	    page: masterPage
+        },
+        methods: {
+	    setPage: setPage
+        }
     });
 
-        $("#vue-div").show();
+    $("#vue-div").show();
+    $("#vue-link").show();
 
 
     return self;

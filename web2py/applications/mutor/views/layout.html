@@ -58,7 +58,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-               <a class="navbar-brand" rel="home" href="{{=URL('default', 'index', args=['index'])}}" title="">
+               <a class="navbar-brand" rel="home" href="/" title="">
                 <img style="width:250px; height:100px; margin-top: -25px;"
                     src="{{=URL('static', 'images', args='Mutor_logo.png')}}" />
                 </a>
@@ -68,8 +68,10 @@
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav navbar-right">
             <!-- {{='auth' in globals() and auth.navbar('Welcome',mode='dropdown') or ''}} -->
-              <a class="button" href="{{=URL('default', 'user', args=['login'])}}">LOG IN</a>
-              <a class="button" href="{{=URL('default','Lesson_index.html')}}">LESSONS</a>
+              <div id="vue-link" class="display:none main_content" style="margin-top:5px;">
+                <a class="button" href="{{=URL('default', 'user', args=['login'])}}">LOG IN</a>
+                <a class="button" href="#" v-on:click="setPage('lessons')">LESSONS</a>
+              </div>
           </ul>
           {{if response.menu:}}
           {{=MENU(response.menu, _class='nav navbar-nav',li_class='dropdown',ul_class='dropdown-menu')}}
@@ -77,7 +79,7 @@
         </div>
       </div>
     </nav>
-    <!-- Masthead ===================================== -->    
+    <!-- Masthead ===================================== -->
     {{block header}}
     {{end}}
     <!-- Main ========================================= -->
@@ -109,7 +111,7 @@
 
     </div>
 
-    {{block footer}} <!-- this is default footer -->      
+    {{block footer}} <!-- this is default footer -->
     <footer class="footer">
       <div class="container-fluid">
         <div class="copyright pull-left">{{=T('Copyright')}} &#169; {{=request.now.year}}</div>

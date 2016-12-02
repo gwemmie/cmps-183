@@ -46,8 +46,6 @@ routes_in = (
     ('/robots.txt', '/examples/static/robots.txt'),
     # do other stuff
     ((r'.*http://otherdomain\.com.* (?P<any>.*)', r'/app/ctr\g<any>')),
-    (BASE + r'/lesson(?P<number>.*)', r'/default/lesson\g<number>'),
-    (BASE + '/lesson1_1', '/mutor/default/lesson1_1'),
     # remove the BASE prefix
     (BASE + '/$anything', '/$anything'),
 )

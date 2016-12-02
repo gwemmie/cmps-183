@@ -23,23 +23,40 @@
 
 <script>
     var get_profiles_url = "{{=URL('default', 'get_profiles')}}";
-    <!-- var tracks_url = "{{=URL('api', 'get_tracks')}}"; -->
-    <!-- var add_track_url = "{{=URL('api', 'add_track', user_signature=True)}}"; -->
     var play = null; // gets defined in default_index.js
     var stop = null; // gets defined in default_index.js
 </script>
 {{end}}
-
-<div class="main_content" id="mutorHome">
-    <div id="vue-div" style="display:none">
-        <div id="mutorHome">
-           <h1>Learn About Music Theory the Cool Way</h1>
-            <br>
-            <br>
-            <h2 style="text-align: center;">Compose Pieces Like These!</h2>
-            <p style="text-align: center">
-                <img src="{{=URL('static', 'images', args='furElise.gif')}}" />
-            </p>
+<div id="vue-div" class="display:none main_content">
+    <div v-if="page == 'test'" id="boo">
+        <a href="javascript:play();">Play</a>&nbsp;&nbsp;&nbsp;<a href="javascript:stop();">Stop</a>
+    </div>
+    <div v-if="page == 'home'" id="mutorHome">
+        <h1>Learn About Music Theory the Cool Way</h1>
+        <br>
+        <br>
+        <h2 style="text-align: center;">Compose Pieces Like These!</h2>
+        <p style="text-align: center">
+            <img src="{{=URL('static', 'images', args='furElise.gif')}}" />
+        </p>
+        <p style="text-align:center">Take our <a href="#" v-on:click="setPage('lessons')">music theory lessons</a> in whatever order that fits you (though we recommend from the beginning if you're new to music).</p>
+    </div>
+    <div v-if="page == 'lessons'" id="mutorLessonList">
+        <div class="post_list_header text-right">
+        </div>
+        <br />
+        <a href="#" v-on:click="setPage('home')">Back to Home</a>
+        <h1>Lessons</h1>
+        <p style="text-align:center"><a href="#" v-on:click="setPage('lesson', 1)">Lesson 1.1</a></p>
+    </div>
+    <div v-if="page == 'lesson'" id="mutorLesson">
+        <div class="post_list_header text-right">
+        </div>
+        <br />
+        <a href="#" v-on:click="setPage('home')">Back to Home</a><br />
+        <a href="#" v-on:click="setPage('lessons')">Back to lesson listing.</a>
+        <div v-if="lesson == 1">
+            This will be lesson 1.
         </div>
     </div>
 </div>
