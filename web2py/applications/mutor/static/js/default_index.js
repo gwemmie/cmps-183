@@ -3,7 +3,15 @@
 var app = function() {
 
     var self = {};
+
+    Vue.config.silent = false; // show all warnings
+
+    VF = Vex.Flow;
+
     var masterPage = 'home';
+    self.vue = null; // needs to be declared earlier for the play functions
+    var notes = []; // defined in a VF function
+    var noteAccidentals = [];
 
     // Extends an array
     self.extend = function(a, b) {
@@ -17,51 +25,6 @@ var app = function() {
         var k=0;
         return v.map(function(e) {e._idx = k++;});
     };
-
-    Vue.config.silent = false; // show all warnings
-
-    self.get_profiles = function () {
-        $.getJSON(get_profiles_url, function (data) {
-            self.vue.profiles = data.profiles
-            self.vue.has_more = data.has_more;
-            self.vue.logged_in = data.logged_in;
-            enumerate(self.vue.profiles);
-        })
-    };
-
-    var setPage = function(page, lesson /*optional*/) {
-	self.vue.page = page;
-	if (typeof lesson !== 'undefined') self.vue.lesson = lesson;
-	if (page == 'test') testStaff();
-    };
-
-    self.vue = new Vue({
-        el: "#vue-div",
-        delimiters: ['${', '}'],
-        unsafeDelimiters: ['!{', '}'],
-        data: {
-            profiles: [],
-	    page: masterPage,
-	    playing: false,
-	    lesson: 0
-        },
-        methods: {
-	    setPage: setPage
-        }
-    });
-    self.vue_link = new Vue({
-	el: "#vue-link",
-        delimiters: ['${', '}'],
-        unsafeDelimiters: ['!{', '}'],
-        data: {
-	    page: masterPage
-        },
-        methods: {
-	    setPage: setPage
-        }
-    });
-
-    VF = Vex.Flow;
 
     //maps vextab notes to midi numbers using associative array
     var vtm = {
@@ -525,7 +488,7 @@ var app = function() {
         stave.addClef("treble").addTimeSignature("4/4");
 
         // Add notes
-        var notes = [
+        notes = [
             // A quarter-note C.
             new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "q" }),
 
@@ -552,7 +515,6 @@ var app = function() {
         // |----|Ab--A|A---|, then that 2nd A will also get a 'b' in
         // noteAccidentals, but the 3rd A will not, and both 2nd and 3rd As
         // will *not* get an .addAccidental('b').
-        var noteAccidentals = [];
         for (var i = 0; i < notes.length; ++i) {
 	    noteAccidentals[i] = [];
 	    for (var j = 0; j < notes[i].keys.length; ++j)
@@ -577,6 +539,44 @@ var app = function() {
 	stop = function() {
 	    self.vue.playing = false;
 	};
+    };
+
+    var lesson1_1 = function() {
+	var div = document.getElementById("lesson1_1");
+	var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
+	renderer.resize(500, 500);
+	var context = renderer.getContext();
+	context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
+	var stave = new VF.Stave(10, 40, 400);
+	stave.addClef("treble").addTimeSignature("4/4");
+	notes = [
+	    // A quarter-note C.
+	    new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "q" }),
+
+	    // A quarter-note D.
+	    new VF.StaveNote({clef: "treble", keys: ["d/4"], duration: "q" }),
+
+	    // A quarter-note rest. Note that the key (b/4) specifies the vertical
+	    // position of the rest.
+	    new VF.StaveNote({clef: "treble", keys: ["b/4"], duration: "qr" }),
+
+	    // A C-Major chord.
+	    new VF.StaveNote({clef: "treble", keys: ["c/4", "e/4", "g/4"], duration: "q" })
+		.addAccidental(0, newAccid('n'))
+		.addAccidental(1, newAccid('b'))
+		.addAccidental(2, newAccid('#'))
+	];
+	for (var i = 0; i < notes.length; ++i) {
+	    noteAccidentals[i] = [];
+	    for (var j = 0; j < notes[i].keys.length; ++j)
+		noteAccidentals[i][j] = '';
+	}
+	noteAccidentals[3] = ['n', 'b', '#'];
+	var voice = new VF.Voice({num_beats: 4,  beat_value: 4});
+	voice.addTickables(notes);
+	var formatter = new VF.Formatter().joinVoices([voice]).format([voice], 400);
+	stave.setContext(context).draw();
+	voice.draw(context, stave);
     };
 
     // examples/tests are here
@@ -606,6 +606,66 @@ var app = function() {
         }
     }
 */
+
+    play = function() {
+	self.vue.playing = true;
+	return playStaff(notes, noteAccidentals);
+    };
+    stop = function() {
+	self.vue.playing = false;
+    };
+
+    self.get_profiles = function () {
+        $.getJSON(get_profiles_url, function (data) {
+            self.vue.profiles = data.profiles
+            self.vue.has_more = data.has_more;
+            self.vue.logged_in = data.logged_in;
+            enumerate(self.vue.profiles);
+        })
+    };
+
+    setPage = function(page) {
+	self.vue.page = page;
+	switch (page) {
+	    case 'test':
+		testStaff();
+		break;
+	    case 'lesson1_1':
+		self.vue.page = 'lesson';
+		self.vue.chapter = 1;
+		self.vue.lesson = 1;
+		lesson1_1();
+		break;
+	    default: break;
+	}
+    };
+
+    self.vue = new Vue({
+        el: "#vue-div",
+        delimiters: ['${', '}'],
+        unsafeDelimiters: ['!{', '}'],
+        data: {
+            profiles: [],
+	    page: masterPage,
+	    playing: false,
+	    chapter: 0,
+	    lesson: 0
+        },
+        methods: {
+	    setPage: setPage
+        }
+    });
+    self.vue_link = new Vue({
+	el: "#vue-link",
+        delimiters: ['${', '}'],
+        unsafeDelimiters: ['!{', '}'],
+        data: {
+	    page: masterPage
+        },
+        methods: {
+	    setPage: setPage
+        }
+    });
 
     $("#vue-div").show();
     $("#vue-link").show();
