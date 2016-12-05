@@ -297,14 +297,14 @@ var app = function() {
         var num = 0;
         var num_array = [];
         for(var i=0; i<note.keys.length; i++){
-	    	// insert the accidental into the name, since VexFlow itself
-	    	// doesn't support that
-	    	var noteName = note.keys[i];
-	    	if (accidentals[i] != '' && accidentals[i] != 'n') {
-				var noteNameArray = noteName.split('/');
-				noteNameArray[0] += accidentals[i];
-				noteName = noteNameArray[0] + '/' + noteNameArray[1];
-	    	}
+	    // insert the accidental into the name, since VexFlow itself
+	    // doesn't support that
+	    var noteName = note.keys[i];
+	    if (accidentals[i] != '' && accidentals[i] != 'n') {
+		var noteNameArray = noteName.split('/');
+		noteNameArray[0] += accidentals[i];
+		noteName = noteNameArray[0] + '/' + noteNameArray[1];
+	    }
             num = vtm[noteName];
             num_array[i] = num;
             console.log(num);
@@ -313,36 +313,42 @@ var app = function() {
     };
 
     var playNote = function(note, duration, accidentals) {
-		if (self.vue.playing == false) return;
+	if (self.vue.playing == false) return;
         if (duration <= 0) return "duration is " + duration;
-		var delay = duration; // in quarter-seconds
-        var midi_array = find_midi_number(note, accidentals);
+	var delay = duration; // in quarter-seconds
+        var midi_array = [];
+	// rests must be silent:
+	if (note.duration.includes('r')) midi_array = [-1];
+	else midi_array =find_midi_number(note, accidentals);
         console.log(midi_array);
         MIDI.loadPlugin({
-		    onprogress: function(state, progress) {
-			    //console.log(state, progress);
-		    },
-		    onsuccess: function() {
-				var nte = midi_array; // the MIDI note
-				if(self.vue.playing == false)midi.stopAllNotes();
-			    var velocity = 127; // how hard the note hits
-				highlightNote(note);
-			    // play the note
-				if(midi_array.length > 1) {
-					console.log("I am a chord");
-					MIDI.setVolume(0, 127, 0.75);
-					MIDI.chordOn(0, nte, velocity, 0);
-					MIDI.chordOff(0, nte, delay);
+	    onprogress: function(state, progress) {
+		//console.log(state, progress);
+	    },
+	    onsuccess: function() {
+		var nte = midi_array; // the MIDI note
+		if(self.vue.playing == false)midi.stopAllNotes();
+		var velocity = 127; // how hard the note hits
+		highlightNote(note);
+		// play the note
+		if (midi_array[0] < 0) {
+		    console.log("I am a rest");
+		    // make it be silent for the same duration
+		} else if (midi_array.length > 1) {
+		    console.log("I am a chord");
+		    MIDI.setVolume(0, 127, 0.75);
+		    MIDI.chordOn(0, nte, velocity, 0);
+		    MIDI.chordOff(0, nte, delay);
 
-				}else{
-					console.log("I am a note");
-					MIDI.setVolume(0, 127, 0.75);
-					MIDI.noteOn(0, nte, velocity, 0);
-					MIDI.noteOff(0, nte, delay);
-				}
-				setTimeout(function(){unHighlightNote(note);},750);
-		    }
-	    });
+		} else {
+		    console.log("I am a note");
+		    MIDI.setVolume(0, 127, 0.75);
+		    MIDI.noteOn(0, nte, velocity, 0);
+		    MIDI.noteOff(0, nte, delay);
+		}
+		setTimeout(function(){unHighlightNote(note);},750);
+	    }
+	});
 
 
         //}
@@ -410,11 +416,11 @@ var app = function() {
     function wait(ms) { var start_time = Date.now(); while (Date.now() - start_time < ms); }
 
     var playStaff = function(notes, noteAccidentals /*optional*/, key /*optional*/, tempo /*optional*/, ties /*optional*/) {
-		if (self.vue.playing == false) return;
-		MIDI.loadPlugin({
-			soundfontUrl: "mutor/static/soundfont/",
-			instrument: "acoustic_grand_piano"
-		});
+	if (self.vue.playing == false) return;
+	MIDI.loadPlugin({
+	    soundfontUrl: "mutor/static/soundfont/",
+	    instrument: "acoustic_grand_piano"
+	});
         // DO NOT pass in a normal ties list as an argument. Make an
         // array, where each index i's value j is what note i is tied
         // to, but j is not i. So, if i and j are tied together, then
@@ -424,27 +430,28 @@ var app = function() {
         // set default arguments:
         tempo = typeof tempo !== 'undefined' ? tempo : 120;
         key = typeof key !== 'undefined' ? key : 'C';
-		var startTime = new Date();
-		var totalDuration = 0;
+	var startTime = new Date();
+	var totalDuration = 0;
         // duration of a quarter note in quarter-seconds:
         var q = 120 / (tempo * 2) * 4;
-		console.log(notes);
+	console.log(notes);
         for (var i = 0; i < notes.length; i++) {
-	    	if (self.vue.playing == false) return;
+	    if (self.vue.playing == false) return;
             var note = notes[i];
-	    	var duration = calculateDuration (note.duration, q);
-	    	totalDuration += duration;
-	    	var endTime = new Date(startTime.getMilliseconds() + (totalDuration / 4.0 * 1000));
-	   		 // wait until specified time:
-	    	setTimeout(function(){}, endTime.getMilliseconds() - (new Date()).getMilliseconds());
+	    // calculateDuration() doesn't care if it's a rest:
+	    var duration = calculateDuration (note.duration.split('r')[0], q);
+	    totalDuration += duration;
+	    var endTime = new Date(startTime.getMilliseconds() + (totalDuration / 4.0 * 1000));
+	    // wait until specified time:
+	    setTimeout(function(){}, endTime.getMilliseconds() - (new Date()).getMilliseconds());
             if (typeof ties === 'undefined' || ties[i] < 0) {
-				if (typeof noteAccidentals !== 'undefined') {
-		   			 playNote (note, duration, calculateKey(note, noteAccidentals[i], key));
-				} else {
-		    		var accidentals = [];
-		    		for (var j = 0; j < notes[i].keys.length; ++j) accidentals[j] = '';
-		    		playNote (note, duration, calculateKey(note, accidentals, key));
-				}
+		if (typeof noteAccidentals !== 'undefined') {
+		    playNote (note, duration, calculateKey(note, noteAccidentals[i], key));
+		} else {
+		    var accidentals = [];
+		    for (var j = 0; j < notes[i].keys.length; ++j) accidentals[j] = '';
+		    playNote (note, duration, calculateKey(note, accidentals, key));
+		}
             } else { /* tied notes have not been implemented yet because
                         it would have been pretty much as massive a job
                         as all of the code made for this website all
