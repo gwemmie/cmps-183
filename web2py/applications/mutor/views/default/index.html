@@ -29,10 +29,10 @@
 </script>
 {{end}}
 <div id="vue-div" class="display:none main_content">
-    <div v-if="page == 'test'" id="boo">
+    <div v-if="page == 'test'" id="boo" style="margin-top:10px;">
+        <a href="#" v-on:click="setPage('test')">test page</a>
         <a href="javascript:play();">Play</a>&nbsp;&nbsp;&nbsp;<a href="javascript:stop();">Stop</a>
     </div>
-    <a href="#" v-on:click="setPage('test')">test page (this link shouldn't be in the final project)</a>
     <div v-if="page == 'home'" id="mutorHome">
         <h1>Learn About Music Theory the Cool Way</h1>
         <br>
@@ -50,6 +50,7 @@
         <a href="#" v-on:click="setPage('home')"><-- Back to Home</a>
         <h1>Lessons</h1>
         <p style="text-align:center">
+            <a href="#" v-on:click="setPage('test')">test page</a>
             <h2>Chapter 1: The Basics</h2>
             <a href="#" v-on:click="setPage('lesson1_1')">Lesson 1.1: Rhythm</a>
         </p>
@@ -62,9 +63,16 @@
         <a href="#" v-on:click="setPage('lessons')"><-- Back to lesson listing</a>
         <div v-if="chapter == 1 && lesson == 1">
             <h1>Lesson 1.1: Rhythm</h1>
-            <p style="text-align:center"></p>
-            <div id="lesson1_1"> </div>
+            <p>Rhythm in music is everything related to speed and timing. For music notation, one of the most important aspects of rhythm is the <strong>measure</strong>, or <strong>bar</strong>. The measure is just a section of the staff. Its meaning is decided by the <strong>time signature</strong>, which is written at the beginning of the staff as two numbers: one on top of the other, often a 4 over another 4 (if there's just a big "C", that means 4/4). The number on top is how many beats there are per measure, and the one on bottom is the <strong>meter</strong>, or what type of note gets the beat.</p>
+            <p>If the number on top is a 4, that means there are 4 beats per measure. If it's a 6, then 6 beats per measure. It's self-explanatory.</p>
+            <p>The meter is slightly more complicated. If the number on the bottom is a 4, that means each quarter note is worth 1 beat. If it's a, 8, then it's each 8th note. 16 means each 16th note, and so on. In the other direction, 2 means half notes and 1 means whole notes.</p>
+            <p>To keep things simple for now, the following example is standard 4/4 time and only uses quarter notes:</p>
+            <div id="lesson1_1">(if you don't see music notation here, VexFlow's bugs have struck again)</div>
             <a href="javascript:play();">Play</a>&nbsp;&nbsp;&nbsp;<a href="javascript:stop();">Stop</a>
+            <p>The next example has each type of note in order: whole, half, quarter, eighth, sixteenth, and thirdy-second:</p>
+            <div id="lesson1_1_note_types">(we didn't actually make the notation for this one, because we know it isn't going to show up anyway)</div>
+            <a href="javascript:play();">Play</a>&nbsp;&nbsp;&nbsp;<a href="javascript:stop();">Stop</a>
+            <p>The only difference between these types of notes (besides how they look) is their timing and speed; their rhythm.</p>
         </div>
     </div>
 </div>
