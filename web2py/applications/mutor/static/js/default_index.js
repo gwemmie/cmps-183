@@ -318,7 +318,10 @@ var app = function() {
 	var delay = duration; // in quarter-seconds
         var midi_array = [];
 	// rests must be silent:
-	if (note.duration.includes('r')) midi_array = [-1];
+		console.log("duration is" + note.duration);
+		/*check if a note is a rest and if it is do nothing,
+		otherwise play it*/
+	if (note.noteType == 'r'){ }
 	else midi_array =find_midi_number(note, accidentals);
         console.log(midi_array);
         MIDI.loadPlugin({
