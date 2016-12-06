@@ -555,10 +555,8 @@ var app = function() {
         voice.draw(context, stave);
 
 	play = function() {
-		//if(self.vue.playing == false) {
-			self.vue.playing = true;
-			return playStaff(notes, noteAccidentals);
-		//}
+	    self.vue.playing = true;
+	    return playStaff(notes, noteAccidentals);
 	};
 	stop = function() {
 	    self.vue.playing = false;
@@ -566,14 +564,14 @@ var app = function() {
     };
 
     var lesson1_1 = function() {
-	var div = document.getElementById("lesson1_1");
-	var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
-	renderer.resize(500, 500);
-	var context = renderer.getContext();
-	context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
-	var stave = new VF.Stave(10, 40, 400);
-	stave.addClef("treble").addTimeSignature("4/4");
-	notes = [
+	var div_basic = document.getElementById("lesson1_1_basic");
+	var renderer_basic = new VF.Renderer(div_basic, VF.Renderer.Backends.SVG);
+	renderer_basic.resize(500, 500);
+	var context_basic = renderer_basic.getContext();
+	context_basic.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
+	var stave_basic = new VF.Stave(10, 40, 400);
+	stave_basic.addClef("treble").addTimeSignature("4/4");
+	notes_basic = [
 	    // A quarter-note C.
 	    new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "q" }),
 
@@ -590,17 +588,58 @@ var app = function() {
 		.addAccidental(1, newAccid('b'))
 		.addAccidental(2, newAccid('#'))
 	];
-	for (var i = 0; i < notes.length; ++i) {
-	    noteAccidentals[i] = [];
-	    for (var j = 0; j < notes[i].keys.length; ++j)
-		noteAccidentals[i][j] = '';
+	for (var i = 0; i < notes_basic.length; ++i) {
+	    noteAccidentals_basic[i] = [];
+	    for (var j = 0; j < notes_basic[i].keys.length; ++j)
+		noteAccidentals_basic[i][j] = '';
 	}
-	noteAccidentals[3] = ['n', 'b', '#'];
-	var voice = new VF.Voice({num_beats: 4,  beat_value: 4});
-	voice.addTickables(notes);
-	var formatter = new VF.Formatter().joinVoices([voice]).format([voice], 400);
-	stave.setContext(context).draw();
-	voice.draw(context, stave);
+	noteAccidentals_basic[3] = ['n', 'b', '#'];
+	var voice_basic = new VF.Voice({num_beats: 4,  beat_value: 4});
+	voice.addTickables(notes_basic);
+	var formatter_basic = new VF.Formatter().joinVoices([voice_basic]).format([voice_basic], 400);
+	stave_basic.setContext(context_basic).draw();
+	voice_basic.draw(context_basic, stave_basic);
+
+	var div_note_types = document.getElementById("lesson1_1_note_types");
+	var renderer_note_types = new VF.Renderer(div_note_types, VF.Renderer.Backends.SVG);
+	renderer_note_types.resize(500, 500);
+	var context_note_types = renderer_note_types.getContext();
+	context_note_types.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
+	var stave_note_types = new VF.Stave(10, 40, 400);
+	stave_note_types.addClef("treble").addTimeSignature("4/4");
+	notes_note_types = [
+	    new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "w" }),
+	    new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "h" }),
+	    new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "q" }),
+	    new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "8" }),
+	    new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "16" }),
+	    new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "32" }),
+	    new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "32" }),
+	];
+	for (var i = 0; i < notes_note_types.length; ++i) {
+	    noteAccidentals_note_types[i] = [];
+	    for (var j = 0; j < notes_note_types[i].keys.length; ++j)
+		noteAccidentals_note_types[i][j] = '';
+	}
+	var voice_note_types = new VF.Voice({num_beats: 4,  beat_value: 4});
+	voice.addTickables(notes_note_types);
+	var formatter_note_types = new VF.Formatter().joinVoices([voice_note_types]).format([voice_note_types], 400);
+	stave_note_types.setContext(context_note_types).draw();
+	voice_note_types.draw(context_note_types, stave_note_types);
+
+	play = function(staff) {
+	    self.vue.playing = true;
+	    switch (staff) {
+		case 'basic':
+		    return playStaff(notes_basic, noteAccidentals_basic);
+		case 'note_types':
+		    return playStaff(notes_note_types, noteAccidentals_note_types);
+		default: return;
+	    }
+	};
+	stop = function() {
+	    self.vue.playing = false;
+	};
     };
 
     // examples/tests are here
@@ -631,13 +670,15 @@ var app = function() {
     }
 */
 
-    play = function() {
-	self.vue.playing = true;
-	return playStaff(notes, noteAccidentals);
-    };
-    stop = function() {
-	self.vue.playing = false;
-    };
+    // Helper function to get rid of existing VF staffs
+    var clearStaff = function() {
+	var staffs = document.getElementsByClassName("staff");
+	for (var i = 0; i < staffs.length; ++i) {
+	    var parent = staffs[i].parentElement;
+	    if (parent != null) parent.removeChild(staffs[i]);
+	    else staffs[i].remove();
+	}
+    }
 
     self.get_profiles = function () {
         $.getJSON(get_profiles_url, function (data) {
@@ -649,6 +690,7 @@ var app = function() {
     };
 
     setPage = function(page) {
+	clearStaff();
 	self.vue.page = page;
 	switch (page) {
 	    case 'test':
