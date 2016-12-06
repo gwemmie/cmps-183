@@ -25,7 +25,7 @@ db.define_table('profiles',
                 Field('user_email', default=auth.user.email if auth.user_id else None),
                 Field('created_on', 'datetime', default=datetime.datetime.utcnow()),
                 Field('user_name', default=get_user_name_from_email(get_user_email())),
-                Field('lessons_completed', 'list:string' ),
+                Field('lessons_completed', 'string' ),
                 )
 
 # I don't want to display the user email by default in all forms.

@@ -71,3 +71,6 @@ CREATE TABLE profiles(
     lessons_completed TEXT
 );
 success!
+success!
+success!
+success!

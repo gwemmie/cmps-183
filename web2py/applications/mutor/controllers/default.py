@@ -21,24 +21,14 @@ def get_user_name_from_email(email):
         return ' '.join([u.first_name, u.last_name])
 
 
-"""retrieve users profile info and the lessons they have completed"""
-def get_profiles():
-    profiles = []
-    rows = db(db.profile.user_name == get_user_name_from_email(get_user_email())).select()
-    for i, r in enumerate(rows):
-        t = dict(
-            id=r.id,
-            lessons_completed=r.lessons_completed
-        )
-        profiles.append(t)
-    print profiles
-    return response.json(dict(profiles=profiles))
-
-
 def index():
     return dict()
 
 
 def error():
+    return dict()
+
+@auth.requires_login()
+def prof():
     return dict()
 

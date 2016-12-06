@@ -639,13 +639,42 @@ var app = function() {
 	self.vue.playing = false;
     };
 
+	function get_profiles_url(start_idx, end_idx) {
+        var pp = {
+            start_idx: start_idx,
+            end_idx: end_idx
+        };
+        return profiles_url + "?" + $.param(pp);
+    }
+
     self.get_profiles = function () {
-        $.getJSON(get_profiles_url, function (data) {
-            self.vue.profiles = data.profiles;
-            self.vue.has_more = data.has_more;
+        $.getJSON(get_profiles_url(0,1), function (data) {
+            self.vue.profile = data.profiles;
             self.vue.logged_in = data.logged_in;
-            enumerate(self.vue.profiles);
+            enumerate(self.vue.profile);
+			console.log(self.vue.profile);
         })
+    };
+
+    self.add_completion = function (logged_in) {
+    // The submit button to add a post has been added.
+		if(logged_in) {
+			self.vue.lessons_completed="lesson1_1";
+			self.vue.already_completed = true;
+			$.post(add_completion_url,
+				{
+					lessons_completed: self.vue.lessons_completed
+				},
+				function (data) {
+					//$.web2py.enableElement($("#add_profiles_submit"));
+					self.vue.profile.unshift(data.profiles);
+					enumerate(self.vue.profile);
+					//make sure that no more than 4 posts are displayed
+					//unless load more button is pressed
+
+				});
+		}
+
     };
 
     setPage = function(page) {
@@ -669,13 +698,17 @@ var app = function() {
         delimiters: ['${', '}'],
         unsafeDelimiters: ['!{', '}'],
         data: {
-            profiles: [],
+			already_completed: false,
+            profile: [],
+			lessons_completed: [],
+			logged_in: false,
 	    page: masterPage,
 	    playing: false,
 	    chapter: 0,
 	    lesson: 0
         },
         methods: {
+			add_completion: self.add_completion,
 	    setPage: setPage
         }
     });
@@ -691,8 +724,10 @@ var app = function() {
         }
     });
 
+	self.get_profiles();
     $("#vue-div").show();
     $("#vue-link").show();
+
 
     return self;
 };
