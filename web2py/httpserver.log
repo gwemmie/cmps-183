@@ -23377,6 +23377,7 @@
 127.0.0.1, 2016-12-05 16:31:16, GET, /mutor/static/images/favicon.ico, HTTP/1.1, 200, 0.001000
 127.0.0.1, 2016-12-05 16:31:21, GET, /, HTTP/1.1, 200, 0.030000
 127.0.0.1, 2016-12-05 16:31:21, GET, /mutor/static/js/default_index.js, HTTP/1.1, 304, 0.004000
+<<<<<<< HEAD
 127.0.0.1, 2016-12-05 16:59:05, GET, /, HTTP/1.1, 200, 0.028000
 127.0.0.1, 2016-12-05 16:59:05, GET, /mutor/static/js/default_index.js, HTTP/1.1, 200, 0.002000
 127.0.0.1, 2016-12-05 16:59:06, GET, /mutor/static/images/favicon.ico, HTTP/1.1, 200, 0.001000
@@ -27213,3 +27214,37 @@ js, HTTP/1.1, 304, 0.001000
 127.0.0.1, 2016-12-06 13:30:59, GET, /mutor/api/get_profiles, HTTP/1.1, 200, 0.062000
 127.0.0.1, 2016-12-06 13:31:03, GET, /, HTTP/1.1, 200, 0.033000
 127.0.0.1, 2016-12-06 13:31:03, GET, /mutor/api/get_profiles, HTTP/1.1, 200, 0.037000
+=======
+127.0.0.1, 2016-12-05 16:47:40, GET, /, HTTP/1.1, 200, 0.117867
+127.0.0.1, 2016-12-05 16:47:40, GET, /mutor/static/js/midi/plugin.webaudio.js, HTTP/1.1, 304, 0.000280
+127.0.0.1, 2016-12-05 16:47:40, GET, /mutor/static/js/default_index.js, HTTP/1.1, 200, 0.000336
+127.0.0.1, 2016-12-05 16:48:54, GET, /admin/default/index, HTTP/1.1, 200, 0.138677
+127.0.0.1, 2016-12-05 16:48:54, GET, /admin/static/_2.14.6/js/jquery.js, HTTP/1.1, 200, 0.000312
+127.0.0.1, 2016-12-05 16:48:54, GET, /admin/static/_2.14.6/css/calendar.css, HTTP/1.1, 200, 0.000224
+127.0.0.1, 2016-12-05 16:48:54, GET, /admin/static/_2.14.6/js/calendar.js, HTTP/1.1, 200, 0.000204
+127.0.0.1, 2016-12-05 16:48:54, GET, /admin/static/_2.14.6/js/web2py.js, HTTP/1.1, 200, 0.000204
+127.0.0.1, 2016-12-05 16:48:54, GET, /admin/static/_2.14.6/plugin_multiselect/jquery.multi-select.js, HTTP/1.1, 200, 0.000242
+127.0.0.1, 2016-12-05 16:48:54, GET, /admin/static/_2.14.6/plugin_multiselect/multi-select.css, HTTP/1.1, 200, 0.000230
+127.0.0.1, 2016-12-05 16:48:54, GET, /admin/static/_2.14.6/plugin_multiselect/start.js, HTTP/1.1, 200, 0.000265
+127.0.0.1, 2016-12-05 16:48:54, GET, /admin/static/_2.14.6/plugin_statebutton/js/bootstrap-switch.js, HTTP/1.1, 200, 0.000411
+127.0.0.1, 2016-12-05 16:48:54, GET, /admin/static/_2.14.6/plugin_statebutton/css/bootstrap-switch.css, HTTP/1.1, 200, 0.000211
+127.0.0.1, 2016-12-05 16:48:54, GET, /admin/static/_2.14.6/css/bootstrap.min.css, HTTP/1.1, 200, 0.000229
+127.0.0.1, 2016-12-05 16:48:54, GET, /admin/static/_2.14.6/css/bootstrap_essentials.css, HTTP/1.1, 200, 0.000539
+127.0.0.1, 2016-12-05 16:48:54, GET, /admin/static/_2.14.6/css/bootstrap-responsive.min.css, HTTP/1.1, 200, 0.000356
+127.0.0.1, 2016-12-05 16:48:54, GET, /admin/static/_2.14.6/js/bootstrap.min.js, HTTP/1.1, 200, 0.000357
+127.0.0.1, 2016-12-05 16:48:54, GET, /admin/static/_2.14.6/images/questions.png, HTTP/1.1, 200, 0.000255
+127.0.0.1, 2016-12-05 16:48:55, GET, /examples/static/favicon.ico, HTTP/1.1, 200, 0.000271
+127.0.0.1, 2016-12-05 16:48:57, POST, /admin/default/index, HTTP/1.1, 303, 0.016400
+127.0.0.1, 2016-12-05 16:48:57, GET, /admin/default/site, HTTP/1.1, 200, 0.031187
+127.0.0.1, 2016-12-05 16:48:58, GET, /admin/static/_2.14.6/images/folder_locked.png, HTTP/1.1, 200, 0.000312
+127.0.0.1, 2016-12-05 16:48:58, GET, /admin/static/_2.14.6/images/folder.png, HTTP/1.1, 200, 0.000200
+127.0.0.1, 2016-12-05 16:48:58, GET, /admin/default/index, HTTP/1.1, 303, 0.002414
+127.0.0.1, 2016-12-05 16:48:58, GET, /admin/static/_2.14.6/images/glyphicons-halflings-white.png, HTTP/1.1, 200, 0.000300
+127.0.0.1, 2016-12-05 16:48:58, GET, /admin/default/site, HTTP/1.1, 200, 0.027048
+127.0.0.1, 2016-12-05 16:49:05, GET, /, HTTP/1.1, 200, 0.011257
+127.0.0.1, 2016-12-05 16:49:05, GET, /mutor/static/js/default_index.js, HTTP/1.1, 304, 0.000254
+127.0.0.1, 2016-12-05 16:49:06, POST, /admin/default/check_version, HTTP/1.1, 200, 7.890582
+127.0.0.1, 2016-12-05 16:49:20, GET, /admin/default/pack/mutor, HTTP/1.1, 200, 0.835139
+>>>>>>> 997ce3f96f6c3e495e969af29bc74db99483019a
+127.0.0.1, 2016-12-06 14:56:18, POST, /mutor/api/add_completion, HTTP/1.1, 303, 0.045000
+127.0.0.1, 2016-12-06 14:56:18, GET, /mutor/default/user/not_authorized, HTTP/1.1, 403, 0.032000
