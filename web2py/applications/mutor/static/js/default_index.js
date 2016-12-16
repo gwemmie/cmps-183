@@ -12,6 +12,7 @@ var app = function() {
     self.vue = null; // needs to be declared earlier for the play functions
     var notes = []; // defined in a VF function
     var noteAccidentals = [];
+	var itor = 0;
 
     // Extends an array
     self.extend = function(a, b) {
@@ -307,7 +308,7 @@ var app = function() {
 	    }
             num = vtm[noteName];
             num_array[i] = num;
-            console.log(num);
+            //console.log(num);
         }
         return num_array;
     };
@@ -318,40 +319,65 @@ var app = function() {
 	var delay = duration; // in quarter-seconds
         var midi_array = [];
 	// rests must be silent:
-		console.log("duration is" + note.duration);
 		/*check if a note is a rest and if it is do nothing,
 		otherwise play it*/
 	if (note.noteType == 'r'){ }
 	else midi_array =find_midi_number(note, accidentals);
-        console.log(midi_array);
-        MIDI.loadPlugin({
-	    onprogress: function(state, progress) {
+        //console.log(midi_array);
+        //MIDI.loadPlugin({
+	    //onprogress: function(state, progress) {
 		//console.log(state, progress);
-	    },
-	    onsuccess: function() {
+	    //},
+	    //onsuccess: function() {
 		var nte = midi_array; // the MIDI note
 		if(self.vue.playing == false)midi.stopAllNotes();
 		var velocity = 127; // how hard the note hits
 		highlightNote(note);
 		// play the note
-		if (midi_array[0] < 0) {
+		if (midi_array.length == 0) {
 		    console.log("I am a rest");
+			++itor;
+					setTimeout(function(){unHighlightNote(note);},750);
+			if(itor < notes.length){
+				setTimeout(function(){playNote(notes[itor],duration,accidentals);},750);
+						if(itor == notes.length - 1){
+				setTimeout(function(){itor = 0;},1000);
+				console.log("made it");
+			     }
+			}
 		    // make it be silent for the same duration
 		} else if (midi_array.length > 1) {
 		    console.log("I am a chord");
 		    MIDI.setVolume(0, 127, 0.75);
 		    MIDI.chordOn(0, nte, velocity, 0);
 		    MIDI.chordOff(0, nte, delay);
+			++itor;
+			setTimeout(function(){unHighlightNote(note);},750);
+			if(itor < notes.length){
+				setTimeout(function(){playNote(notes[itor],duration,accidentals);},750);
+						if(itor == notes.length - 1){
+				setTimeout(function(){itor = 0;},1000);
+				console.log("made it");
+			     }
+			}
 
 		} else {
 		    console.log("I am a note");
 		    MIDI.setVolume(0, 127, 0.75);
 		    MIDI.noteOn(0, nte, velocity, 0);
 		    MIDI.noteOff(0, nte, delay);
+			++itor;
+			setTimeout(function(){unHighlightNote(note);},750);
+			if(itor < notes.length){
+				setTimeout(function(){playNote(notes[itor],duration,accidentals);},750);
+				if(itor == notes.length - 1){
+				setTimeout(function(){itor = 0;},1000);
+				console.log("made it");
+			}
+			}
 		}
-		setTimeout(function(){unHighlightNote(note);},750);
-	    }
-	});
+	    //}
+	//});
 
 
         //}
@@ -437,23 +463,36 @@ var app = function() {
 	var totalDuration = 0;
         // duration of a quarter note in quarter-seconds:
         var q = 120 / (tempo * 2) * 4;
-	console.log(notes);
-        for (var i = 0; i < notes.length; i++) {
-	    if (self.vue.playing == false) return;
-            var note = notes[i];
-	    // calculateDuration() doesn't care if it's a rest:
-	    var duration = calculateDuration (note.duration.split('r')[0], q);
-	    totalDuration += duration;
-	    var endTime = new Date(startTime.getMilliseconds() + (totalDuration / 4.0 * 1000));
-	    // wait until specified time:
-	    setTimeout(function(){}, endTime.getMilliseconds() - (new Date()).getMilliseconds());
+	//console.log(notes);
+	    //if (self.vue.playing == false) return;
+				var note = notes[itor];
+				// calculateDuration() doesn't care if it's a rest:
+				var duration = calculateDuration(note.duration.split('r')[0], q);
+				totalDuration += duration;
+				//var endTime = new Date(startTime.getMilliseconds() + (totalDuration / 4.0 * 1000));
+				// wait until specified time:
+				//setTimeout(function(){}, endTime.getMilliseconds() - (new Date()).getMilliseconds());
+
             if (typeof ties === 'undefined' || ties[i] < 0) {
 		if (typeof noteAccidentals !== 'undefined') {
-		    playNote (note, duration, calculateKey(note, noteAccidentals[i], key));
+        //console.log(midi_array);
+				MIDI.loadPlugin({
+	    //soundfontUrl: "mutor/static/soundfont/",
+	    //instrument: "acoustic_grand_piano",
+					onsuccess: function(){playNote(note, duration, calculateKey(note, noteAccidentals[itor], key))}
+	});
+
+
+
 		} else {
-		    var accidentals = [];
-		    for (var j = 0; j < notes[i].keys.length; ++j) accidentals[j] = '';
-		    playNote (note, duration, calculateKey(note, accidentals, key));
+				var accidentals = [];
+				for (var j = 0; j < notes[i].keys.length; ++j) accidentals[j] = '';
+				//console.log(midi_array);
+							MIDI.loadPlugin({
+	    //soundfontUrl: "mutor/static/soundfont/",
+	    //instrument: "acoustic_grand_piano",
+					onsuccess: function(){playNote(note, duration, calculateKey(note, accidentals, key))}
+	});
 		}
             } else { /* tied notes have not been implemented yet because
                         it would have been pretty much as massive a job
@@ -476,8 +515,6 @@ var app = function() {
                 }*/
 
             }
-
-        }
     };
 
     // Helper functions for accidentals
