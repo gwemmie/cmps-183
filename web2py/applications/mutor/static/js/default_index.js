@@ -345,7 +345,7 @@ var app = function () {
             ++itor;
             setTimeout(function () {
                 unHighlightNote(note);
-            }, 750);
+            }, 500);
             if (itor < notes.length) {
                 setTimeout(function () {
                     playNote(notes[itor], duration, noteAccidentals[itor]);
@@ -367,7 +367,7 @@ var app = function () {
             ++itor;
             setTimeout(function () {
                 unHighlightNote(note);
-            }, 750);
+            }, 500);
             if (itor < notes.length) {
                 setTimeout(function () {
                     playNote(notes[itor], duration, noteAccidentals[itor]);
@@ -389,7 +389,7 @@ var app = function () {
             //unhighlight note after 750ms
             setTimeout(function () {
                 unHighlightNote(note);
-            }, 750);
+            }, 500);
             if (itor < notes.length) {
                 /*recursive call to playNote that is executed after 750ms
                 and is passed the accidentals and note info for the next
@@ -564,15 +564,17 @@ var app = function () {
 
         // Add notes
         notes = [
+            //new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "8"}),
+
             // A quarter-note C.
-            new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "q"}),
+            new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "h"}),
 
             // A quarter-note D.
             new VF.StaveNote({clef: "treble", keys: ["d/4"], duration: "q"}),
 
             // A quarter-note rest. Note that the key (b/4) specifies the vertical
             // position of the rest.
-            new VF.StaveNote({clef: "treble", keys: ["b/4"], duration: "qr"}),
+            //new VF.StaveNote({clef: "treble", keys: ["b/4"], duration: "qr"}),
 
             // A C-Major chord.
             new VF.StaveNote({clef: "treble", keys: ["c/4", "e/4", "g/4"], duration: "q"})
