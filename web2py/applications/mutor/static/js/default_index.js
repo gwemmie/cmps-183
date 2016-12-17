@@ -315,115 +315,7 @@ var app = function () {
         return num_array;
     };
 
-    var playNote = function (note, duration, accidentals) {
-        /*stops staff playback when "Stop" is clicked and
-         sets staff to play from beginning again when "Play" is clicked*/
-        if (self.vue.playing == false) {
-            MIDI.stopAllNotes();
-            itor = 0;
-            console.log("stopping playback");
-            return;
-        }
-        if (duration <= 0) return "duration is " + duration;
-        var delay = duration / 3; // in quarter-seconds
-        var midi_array = [];
-        // rests must be silent:
-        /*check if a note is a rest and if it is do nothing,
-         otherwise play it*/
-        if (note.noteType == 'r') {
-        }
-        else midi_array = find_midi_number(note, accidentals);
-        var nte = midi_array; // the MIDI note
-        var velocity = 80; // how hard the note hits
-        highlightNote(note);
-        /*case where note is a rest, in which case we highlight and
-        unhighlight the note, but do not play a sound.
-        We also increment the global itor variable which controls
-        the note we operate on*/
-        if (midi_array.length == 0) {
-            console.log("I am a rest");
-            ++itor;
-            setTimeout(function () {
-                unHighlightNote(note);
-            }, 500);
-            if (itor < notes.length) {
-                setTimeout(function () {
-                    playNote(notes[itor], duration, noteAccidentals[itor]);
-                }, 750);
-                if (itor == notes.length - 1) {
-                    setTimeout(function () {
-                        itor = 0;
-                    }, 1000);
-                }
-            }
-            /*Case where the note is actually a chord.
-            We play the chord and increment itor*/
-        } else if (midi_array.length > 1) {
-            console.log("I am a chord");
-            console.log(nte);
-            MIDI.setVolume(0, 127, 0.75);
-            MIDI.chordOn(0, nte, velocity, 0);
-            MIDI.chordOff(0, nte, delay);
-            ++itor;
-            setTimeout(function () {
-                unHighlightNote(note);
-            }, 500);
-            if (itor < notes.length) {
-                setTimeout(function () {
-                    playNote(notes[itor], duration, noteAccidentals[itor]);
-                }, 750);
-                if (itor == notes.length - 1) {
-                    setTimeout(function () {
-                        itor = 0;
-                    }, 1000);
-                }
-            }
-            /*Case where we want to play a regular note.
-             We play it and then increment itor as in the other cases*/
-        } else {
-            console.log("I am a note");
-            MIDI.setVolume(0, 127, 0.75);
-            MIDI.noteOn(0, nte, velocity, 0);
-            MIDI.noteOff(0, nte, delay);
-            ++itor;
-            //unhighlight note after 750ms
-            setTimeout(function () {
-                unHighlightNote(note);
-            }, 500);
-            if (itor < notes.length) {
-                /*recursive call to playNote that is executed after 750ms
-                and is passed the accidentals and note info for the next
-                note in notes*/
-                setTimeout(function () {
-                    playNote(notes[itor], duration, noteAccidentals[itor]);
-                }, 750);
-                if (itor == notes.length - 1) {
-                    /*resets global itor variable to 0 after playing
-                    last note on staff*/
-                    setTimeout(function () {
-                        itor = 0;
-                    }, 1000);
-                }
-            }
-        }
-        // Use MIDI.js to actually play it with sound.
-        // Make sure the function doesn't return until the note is
-        // finished playing. Might have to use sleep/wait/pause or
-        // maybe MIDI.js has its own way of doing this? Might be the
-        // default, too.
-        // That will make playStaff an easier function to write and
-        // also prevent playing way too many notes at once, which
-        // would get very loud.
-        // Also keep in mind that one "note" can actually be
-        // multiple notes at once--a chord. Look at the 4th note in
-        // our current example array for an example.
-        // But thanks to how music notation works, we don't have to
-        // worry about multiple durations, so just have MIDI.js play
-        // more than one frequency for that same duration.
-    };
-
-
-    // helper function to get note duration
+        // helper function to get note duration
     var calculateDuration = function (duration, q) {
         switch (duration) {
             case "w":
@@ -455,6 +347,118 @@ var app = function () {
         }
         return 0;
     };
+
+    var playNote = function (note, duration, accidentals) {
+        /*stops staff playback when "Stop" is clicked and
+         sets staff to play from beginning again when "Play" is clicked*/
+        if (self.vue.playing == false) {
+            MIDI.stopAllNotes();
+            itor = 0;
+            console.log("stopping playback");
+            return;
+        }
+        if (duration <= 0) return "duration is " + duration;
+        tempo = typeof tempo !== 'undefined' ? tempo : 120;
+        var q = 120 / (tempo * 2) * 4;
+        //calculate duration of current note
+        var dur = calculateDuration(note.duration.split('r')[0], q);
+        var delay = dur/3; // in quarter-seconds
+        var midi_array = [];
+        // rests must be silent:
+        /*check if a note is a rest and if it is do nothing,
+         otherwise play it*/
+        if (note.noteType == 'r') {
+        }
+        else midi_array = find_midi_number(note, accidentals);
+        var nte = midi_array; // the MIDI note
+        var velocity = 80; // how hard the note hits
+        highlightNote(note);
+        /*case where note is a rest, in which case we highlight and
+        unhighlight the note, but do not play a sound.
+        We also increment the global itor variable which controls
+        the note we operate on*/
+        if (midi_array.length == 0) {
+            console.log("I am a rest");
+            ++itor;
+            setTimeout(function () {
+                unHighlightNote(note);
+            }, (delay*1000));
+            if (itor < notes.length) {
+                setTimeout(function () {
+                    playNote(notes[itor], dur, noteAccidentals[itor]);
+                }, (delay*1000));
+                if (itor == notes.length - 1) {
+                    setTimeout(function () {
+                        itor = 0;
+                    }, 1000);
+                }
+            }
+            /*Case where the note is actually a chord.
+            We play the chord and increment itor*/
+        } else if (midi_array.length > 1) {
+            console.log("I am a chord");
+            console.log(nte);
+            MIDI.setVolume(0, 127, 0.75);
+            MIDI.chordOn(0, nte, velocity, 0);
+            MIDI.chordOff(0, nte, delay);
+            ++itor;
+            setTimeout(function () {
+                unHighlightNote(note);
+            }, (delay*1000));
+            if (itor < notes.length) {
+                setTimeout(function () {
+                    playNote(notes[itor], dur, noteAccidentals[itor]);
+                }, (delay*1000));
+                if (itor == notes.length - 1) {
+                    setTimeout(function () {
+                        itor = 0;
+                    }, 1000);
+                }
+            }
+            /*Case where we want to play a regular note.
+             We play it and then increment itor as in the other cases*/
+        } else {
+            console.log("I am a note");
+            MIDI.setVolume(0, 127, 0.75);
+            MIDI.noteOn(0, nte, velocity, 0);
+            MIDI.noteOff(0, nte, delay);
+            ++itor;
+            //unhighlight note after 750ms
+            setTimeout(function () {
+                unHighlightNote(note);
+            }, (delay*1000));
+            if (itor < notes.length) {
+                /*recursive call to playNote that is executed after 750ms
+                and is passed the accidentals and note info for the next
+                note in notes*/
+                setTimeout(function () {
+                    playNote(notes[itor], dur, noteAccidentals[itor]);
+                }, (delay*1000));
+                if (itor == notes.length - 1) {
+                    /*resets global itor variable to 0 after playing
+                    last note on staff*/
+                    setTimeout(function () {
+                        itor = 0;
+                    }, 1000);
+                }
+            }
+        }
+        // Use MIDI.js to actually play it with sound.
+        // Make sure the function doesn't return until the note is
+        // finished playing. Might have to use sleep/wait/pause or
+        // maybe MIDI.js has its own way of doing this? Might be the
+        // default, too.
+        // That will make playStaff an easier function to write and
+        // also prevent playing way too many notes at once, which
+        // would get very loud.
+        // Also keep in mind that one "note" can actually be
+        // multiple notes at once--a chord. Look at the 4th note in
+        // our current example array for an example.
+        // But thanks to how music notation works, we don't have to
+        // worry about multiple durations, so just have MIDI.js play
+        // more than one frequency for that same duration.
+    };
+
 
     // helper function to apply the key's accidentals
     var calculateKey = function (note, accidentals, key) {
