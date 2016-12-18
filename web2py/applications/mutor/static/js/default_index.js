@@ -430,9 +430,7 @@ var app = function () {
         if (itor == notes.length) {
             /*resets global itor variable to 0 after playing
                    last note on staff*/
-            setTimeout(function () {
                 itor = 0;
-            }, 1000);
         }
         // Use MIDI.js to actually play it with sound.
         // Make sure the function doesn't return until the note is
