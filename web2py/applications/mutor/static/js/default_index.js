@@ -348,7 +348,7 @@ var app = function () {
         return 0;
     };
 
-    var playNote = function (note, duration, accidentals) {
+    var playNote = function (note, duration, accidentals,tempo,key) {
         /*stops staff playback when "Stop" is clicked and
          sets staff to play from beginning again when "Play" is clicked*/
         if (self.vue.playing == false) {
@@ -358,6 +358,7 @@ var app = function () {
             return;
         }
         if (duration <= 0) return "duration is " + duration;
+        key = typeof key !== 'undefined' ? key : 'C';
         tempo = typeof tempo !== 'undefined' ? tempo : 120;
         var q = 120 / (tempo * 2) * 4;
         //calculate duration of current note
@@ -385,7 +386,7 @@ var app = function () {
             }, (delay*1000));
             if (itor < notes.length) {
                 setTimeout(function () {
-                    playNote(notes[itor], dur, noteAccidentals[itor]);
+                    playNote(notes[itor], dur, calculateKey(note, noteAccidentals[itor], key),tempo,key);
                 }, (delay*1000));
                 if (itor == notes.length - 1) {
                     setTimeout(function () {
@@ -407,7 +408,7 @@ var app = function () {
             }, (delay*1000));
             if (itor < notes.length) {
                 setTimeout(function () {
-                    playNote(notes[itor], dur, noteAccidentals[itor]);
+                    playNote(notes[itor], dur, calculateKey(note, noteAccidentals[itor], key),tempo,key);
                 }, (delay*1000));
                 if (itor == notes.length - 1) {
                     setTimeout(function () {
@@ -432,7 +433,7 @@ var app = function () {
                 and is passed the accidentals and note info for the next
                 note in notes*/
                 setTimeout(function () {
-                    playNote(notes[itor], dur, noteAccidentals[itor]);
+                    playNote(notes[itor], dur, calculateKey(note, noteAccidentals[itor], key),tempo,key);
                 }, (delay*1000));
                 if (itor == notes.length - 1) {
                     /*resets global itor variable to 0 after playing
@@ -498,7 +499,7 @@ var app = function () {
                 //console.log(midi_array);
                 MIDI.loadPlugin({
                     onsuccess: function () {
-                        playNote(note, duration, calculateKey(note, noteAccidentals[itor], key))
+                        playNote(note, duration, calculateKey(note, noteAccidentals[itor], key),tempo)
                     }
                 });
 
@@ -509,7 +510,7 @@ var app = function () {
                 //console.log(midi_array);
                 MIDI.loadPlugin({
                     onsuccess: function () {
-                        playNote(note, duration, calculateKey(note, accidentals, key))
+                        playNote(note, duration, calculateKey(note, accidentals, key),tempo)
                     }
                 });
             }
@@ -574,7 +575,7 @@ var app = function () {
             new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "h"}),
 
             // A quarter-note D.
-            new VF.StaveNote({clef: "treble", keys: ["d/4"], duration: "q"}),
+            new VF.StaveNote({clef: "treble", keys: ["d/4"], duration: "qr"}),
 
             // A quarter-note rest. Note that the key (b/4) specifies the vertical
             // position of the rest.
