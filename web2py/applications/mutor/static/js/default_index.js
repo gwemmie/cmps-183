@@ -388,11 +388,6 @@ var app = function () {
                 setTimeout(function () {
                     playNote(notes[itor], dur, calculateKey(note, noteAccidentals[itor], key),tempo,key);
                 }, (delay*1000));
-                if (itor == notes.length - 1) {
-                    setTimeout(function () {
-                        itor = 0;
-                    }, 1000);
-                }
             }
             /*Case where the note is actually a chord.
             We play the chord and increment itor*/
@@ -410,11 +405,6 @@ var app = function () {
                 setTimeout(function () {
                     playNote(notes[itor], dur, calculateKey(note, noteAccidentals[itor], key),tempo,key);
                 }, (delay*1000));
-                if (itor == notes.length - 1) {
-                    setTimeout(function () {
-                        itor = 0;
-                    }, 1000);
-                }
             }
             /*Case where we want to play a regular note.
              We play it and then increment itor as in the other cases*/
@@ -435,14 +425,14 @@ var app = function () {
                 setTimeout(function () {
                     playNote(notes[itor], dur, calculateKey(note, noteAccidentals[itor], key),tempo,key);
                 }, (delay*1000));
-                if (itor == notes.length - 1) {
-                    /*resets global itor variable to 0 after playing
-                    last note on staff*/
-                    setTimeout(function () {
-                        itor = 0;
-                    }, 1000);
-                }
             }
+        }
+        if (itor == notes.length) {
+            /*resets global itor variable to 0 after playing
+                   last note on staff*/
+            setTimeout(function () {
+                itor = 0;
+            }, 1000);
         }
         // Use MIDI.js to actually play it with sound.
         // Make sure the function doesn't return until the note is
@@ -612,7 +602,7 @@ var app = function () {
         }
         /*make sure index in noteAccidentals matches with the appropriate
         note index on the staff*/
-        noteAccidentals[2] = ['n', 'b', '#'];
+        noteAccidentals[7] = ['n', 'b', '#'];
 
         var voice = new VF.Voice({num_beats: 4, beat_value: 4});
         voice.addTickables(notes);
