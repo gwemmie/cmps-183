@@ -12,7 +12,7 @@ var app = function () {
     self.vue = null; // needs to be declared earlier for the play functions
     var notes = []; // defined in a VF function
     var noteAccidentals = [];
-    var itor = 0;
+    var itor = 0; //global iterator used for recursive calls of playNote function
 
     // Extends an array
     self.extend = function (a, b) {
@@ -602,7 +602,9 @@ var app = function () {
             for (var j = 0; j < notes[i].keys.length; ++j)
                 noteAccidentals[i][j] = '';
         }
-        noteAccidentals[3] = ['n', 'b', '#'];
+        /*make sure index in noteAccidentals matches with the appropriate
+        note index on the staff*/
+        noteAccidentals[2] = ['n', 'b', '#'];
 
         var voice = new VF.Voice({num_beats: 4, beat_value: 4});
         voice.addTickables(notes);
