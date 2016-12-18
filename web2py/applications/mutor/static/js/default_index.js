@@ -569,13 +569,21 @@ var app = function () {
 
         // Add notes
         notes = [
-            //new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "8"}),
+            new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "32"}),
+
+            new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "32"}),
+
+            new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "16"}),
+
+            new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "8"}),
+
+            new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "8"}),
 
             // A quarter-note C.
-            new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "h"}),
+            new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "8"}),
 
             // A quarter-note D.
-            new VF.StaveNote({clef: "treble", keys: ["d/4"], duration: "qr"}),
+            new VF.StaveNote({clef: "treble", keys: ["d/4"], duration: "q"}),
 
             // A quarter-note rest. Note that the key (b/4) specifies the vertical
             // position of the rest.
