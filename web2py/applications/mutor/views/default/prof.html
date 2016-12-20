@@ -39,7 +39,13 @@
                 <h2 style="text-align:center">User Name: ${p.user_name}</h2>
                 <h2 style="text-align:center">User Email: ${p.user_email}</h2>
                 <h2 style="text-align:center">Member Since: ${p.created_on}</h2>
-                <h2 style="text-align:center">Lessons Completed: ${p.lessons_completed}</h2>
+                <h2 style="text-align:center">Lessons Completed: </h2>
+                <div v-for="index in p.lessons_completed.length">
+                        <div v-if="(index - 1) < p.lessons_completed.length">
+                        <h3 style="text-align:center">${p.lessons_completed[(index - 1)] + ","}</h3>
+                        <p hidden>${index = index + 1}</p>
+                        </div>
+                </div>
             </div>
         </p>
 </div>

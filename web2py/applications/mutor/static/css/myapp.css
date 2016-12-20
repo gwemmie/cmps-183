@@ -42,7 +42,7 @@ img {
     display: inline-block;
     text-align: center;
     vertical-align: middle;
-    padding: 12px 24px;
+    padding: 6px 6px;
     border: 1px solid #775a34;
     border-radius: 8px;
     background: #c29355;
@@ -50,7 +50,7 @@ img {
     background: -moz-linear-gradient(top, #c29355, #775a34);
     background: linear-gradient(to bottom, #c29355, #775a34);
     text-shadow: #4b3921 1px 1px 1px;
-    font: normal normal bold 20px arial;
+    font: normal normal bold 15px arial;
     color: #ffffff;
     text-decoration: none;
 }

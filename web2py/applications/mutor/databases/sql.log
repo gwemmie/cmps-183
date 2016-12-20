@@ -74,3 +74,6 @@ success!
 success!
 success!
 success!
+timestamp: 2016-12-18T17:32:21.966000
+ALTER TABLE profiles ADD just_completed CHAR(512);
+success!

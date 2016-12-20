@@ -24,6 +24,7 @@
 <script>
     var profiles_url = "{{=URL('api', 'get_profiles')}}";
     var add_completion_url = "{{=URL('api', 'add_completion', user_signature=True)}}";
+    var add_profile_url = "{{=URL('api', 'add_profile', user_signature=True)}}";
     var refresh_url = "{{=URL('default', 'index')}}";
     var play = null; // gets defined in default_index.js
     var stop = null; // gets defined in default_index.js
@@ -64,7 +65,7 @@
         <a href="#" v-on:click="setPage('lessons')"><-- Back to lesson listing</a>
         <a href="#" v-on:click="setPage('lesson1_1')">Lesson 1.1: Rhythm</a>
         <div v-if="chapter == 1 && lesson == 1">
-            <div v-if="already_completed == false">${add_completion(logged_in, page)}</div>
+            <div v-if="logged_in">${add_completion((chapter + '_' + lesson))}</div>
             <h1>Lesson 1.1: Rhythm</h1>
             <p>Rhythm in music is everything related to speed and timing. For music notation, one of the most important aspects of rhythm is the <strong>measure</strong>, or <strong>bar</strong>. The measure is just a section of the staff. Its meaning is decided by the <strong>time signature</strong>, which is written at the beginning of the staff as two numbers: one on top of the other, often a 4 over another 4 (if there's just a big "C", that means 4/4). The number on top is how many beats there are per measure, and the one on bottom is the <strong>meter</strong>, or what type of note gets the beat.</p>
             <p>If the number on top is a 4, that means there are 4 beats per measure. If it's a 6, then 6 beats per measure. It's self-explanatory.</p>

@@ -1,3 +1,5 @@
+
+
 def get_user_email():
     return auth.user.email if auth.user else None
 
@@ -27,7 +29,7 @@ def get_profiles():
                 created_on=r.created_on
             )
             profiles.append(t)
-    logged_in = auth.user_id is not None
+    logged_in = auth.is_logged_in()
     return response.json(dict(profiles=profiles, logged_in = logged_in,))
 
 # Note that we need the URL to be signed, as this changes the db.
@@ -35,9 +37,29 @@ def get_profiles():
 def add_completion():
     """Here you get a new post and add it.  Return what you want."""
     # Implement me!
-    p_id = db.profiles.insert(
-        lessons_completed=request.vars.lessons_completed,
-    )
+    rows = db(db.profiles.user_name == get_user_name_from_email(get_user_email())).select()
+    for i, r in enumerate(rows):
+        if(request.vars.just_completed not in r.lessons_completed):
+                r.lessons_completed.append(request.vars.just_completed)
+                r.just_completed=request.vars.just_completed
+                r.update_record()
+    return response.json(dict())
+
+# Note that we need the URL to be signed, as this changes the db.
+@auth.requires_signature()
+def add_profile():
+    """Here you get a new post and add it.  Return what you want."""
+    # Implement me!
+    logged_in = auth.user_id is not None
+    rows=db(db.profiles.user_name == get_user_name_from_email(get_user_email())).count()
+    if(rows > 0):
+        return
+    p_id = None
+    if(logged_in):
+        p_id = db.profiles.insert(
+            lessons_completed=request.vars.lessons_completed,
+            just_completed=request.vars.curr_completion
+        )
     p = db.profiles(p_id)
     return response.json(dict(profiles=p))
 

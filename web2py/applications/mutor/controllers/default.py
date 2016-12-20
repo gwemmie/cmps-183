@@ -2,6 +2,7 @@
 
 ### required - do no delete
 def user(): return dict(form=auth())
+@cache.action()
 def download(): return response.download(request,db)
 def call(): return service()
 ### end requires
@@ -31,4 +32,3 @@ def error():
 @auth.requires_login()
 def prof():
     return dict()
-

@@ -681,19 +681,40 @@ var app = function () {
         $.getJSON(get_profiles_url(0, 1), function (data) {
             self.vue.profile = data.profiles;
             self.vue.logged_in = data.logged_in;
+            console.log("you are" + data.logged_in);
+            self.add_profile();
             enumerate(self.vue.profile);
             console.log(self.vue.profile);
         })
     };
 
-    self.add_completion = function (logged_in) {
+    self.add_completion = function (completion_string) {
         // The submit button to add a post has been added.
-        if (logged_in) {
-            self.vue.lessons_completed = "lesson1_1";
-            self.vue.already_completed = true;
+        if (self.vue.logged_in == true) {
+            curr_completion = completion_string;
             $.post(add_completion_url,
                 {
-                    lessons_completed: self.vue.lessons_completed
+                    just_completed: curr_completion
+                },
+                function (data) {
+                    //$.web2py.enableElement($("#add_profiles_submit"));
+                    self.vue.profile.unshift(data.profiles);
+                    enumerate(self.vue.profile);
+                    //make sure that no more than 4 posts are displayed
+                    //unless load more button is pressed
+
+                });
+        }
+
+    };
+
+    self.add_profile = function () {
+        console.log(self.vue.logged_in);
+        if (self.vue.logged_in == true) {
+            $.post(add_profile_url,
+                {
+                    lessons_completed: self.vue.lessons_completed,
+                    just_completed:self.vue.curr_completion
                 },
                 function (data) {
                     //$.web2py.enableElement($("#add_profiles_submit"));
@@ -729,7 +750,7 @@ var app = function () {
         delimiters: ['${', '}'],
         unsafeDelimiters: ['!{', '}'],
         data: {
-            already_completed: false,
+            curr_completion:"",
             profile: [],
             lessons_completed: [],
             logged_in: false,
@@ -739,6 +760,7 @@ var app = function () {
             lesson: 0
         },
         methods: {
+            add_profile: self.add_profile,
             add_completion: self.add_completion,
             setPage: setPage
         }

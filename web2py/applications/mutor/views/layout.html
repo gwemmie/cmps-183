@@ -69,9 +69,8 @@
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav navbar-right">
-            <!-- {{='auth' in globals() and auth.navbar('Welcome',mode='dropdown') or ''}} -->
-              <div id="vue-link" class="display:none main_content" style="margin-top:5px;">
-                <a class="button" href="{{=URL('default', 'user', args=['login'])}}">LOG IN</a>
+             {{='auth' in globals() and auth.navbar('Welcome',mode='dropdown') or ''}}
+              <div id="vue-link" class=".button" style="margin-top:0px">
                 <a class="button" href="#" v-on:click="setPage('lessons')">LESSONS</a>
               </div>
           </ul>
