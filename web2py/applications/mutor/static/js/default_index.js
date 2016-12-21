@@ -431,6 +431,9 @@ var app = function () {
             /*resets global itor variable to 0 after playing
                    last note on staff*/
                 itor = 0;
+            setTimeout(function () {
+                    self.vue.playing = false;
+            }, (1000));
         }
         // Use MIDI.js to actually play it with sound.
         // Make sure the function doesn't return until the note is
@@ -613,10 +616,10 @@ var app = function () {
         voice.draw(context, stave);
 
         play = function () {
-            //if(self.vue.playing == false) {
-            self.vue.playing = true;
-            return playStaff(notes, noteAccidentals);
-            //}
+            if(self.vue.playing == false) {
+                self.vue.playing = true;
+                return playStaff(notes, noteAccidentals);
+            }
         };
         stop = function () {
             self.vue.playing = false;
@@ -662,8 +665,10 @@ var app = function () {
     };
 
     play = function () {
-        self.vue.playing = true;
-        return playStaff(notes, noteAccidentals);
+        if(self.vue.playing == false) {
+            self.vue.playing = true;
+            return playStaff(notes, noteAccidentals);
+        }
     };
     stop = function () {
         self.vue.playing = false;
