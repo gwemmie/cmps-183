@@ -4,5 +4,4 @@ response.meta.author = '%(author)s <%(author_email)s>' % settings
 response.meta.keywords = settings.keywords
 response.meta.description = settings.description
 response.menu += [
-(T('GAMES'), False, URL('admin', 'default', 'site'))
 ]

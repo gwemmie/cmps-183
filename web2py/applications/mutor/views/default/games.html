@@ -20,35 +20,27 @@
 <script src="{{=URL('static', 'js/midi/player.js')}}" type="text/javascript"></script>
 <script src="{{=URL('static', 'js/midi/synesthesia.js')}}" type="text/javascript"></script>
 
+<!-- game scripts -->
+<script src="{{=URL('static', 'js/p5.js')}}" type="text/javascript"></script>
+<script src="{{=URL('static', 'js/p5.dom.js')}}" type="text/javascript"></script>
+<script src="{{=URL('static', 'js/p5.sound.js')}}" type="text/javascript"></script>
+<script src="{{=URL('static', 'js/sketch.js')}}" type="text/javascript"></script>
+
 
 <script>
     var profiles_url = "{{=URL('api', 'get_profiles')}}";
     var add_completion_url = "{{=URL('api', 'add_completion', user_signature=True)}}";
+    var add_profile_url = "{{=URL('api', 'add_profile', user_signature=True)}}";
     var refresh_url = "{{=URL('default', 'index')}}";
     var play = null; // gets defined in default_index.js
     var stop = null; // gets defined in default_index.js
 </script>
 {{end}}
 <div id="vue-div" class="display:none main_content">
-        <br />
-        <p style="text-align:center">
-            <h1 style="text-align:center">Profile</h1>
-            <br/>
-            <br/>
-            <div v-for="p in profile">
-                <h2 style="text-align:center">User Name: ${p.user_name}</h2>
-                <h2 style="text-align:center">User Email: ${p.user_email}</h2>
-                <h2 style="text-align:center">Member Since: ${p.created_on}</h2>
-                <h2 style="text-align:center"><u>Lessons Completed</u> </h2>
-                <div v-for="index in p.lessons_completed.length">
-                        <div v-if="(index - 1) < p.lessons_completed.length">
-                        <h3 style="text-align:center">${p.lessons_completed[(index - 1)]}</h3>
-                        <p hidden>${index = index + 1}</p>
-                        </div>
-                </div>
-            </div>
-        </p>
+    <h2 style="text-align: center">Games</h2>
 </div>
+
+
         <!-- midi.js utils -->
 <script src="{{=URL('static', 'js/util/dom_request_xhr.js')}}" type="text/javascript"></script>
 <script src="{{=URL('static', 'js/util/dom_request_script.js')}}" type="text/javascript"></script>

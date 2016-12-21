@@ -32,3 +32,6 @@ def error():
 @auth.requires_login()
 def prof():
     return dict()
+
+def games():
+    return dict()
