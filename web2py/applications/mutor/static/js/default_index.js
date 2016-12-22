@@ -686,10 +686,10 @@ var app = function () {
         $.getJSON(get_profiles_url(0, 1), function (data) {
             self.vue.profile = data.profiles;
             self.vue.logged_in = data.logged_in;
-            console.log("you are" + data.logged_in);
+            //console.log("you are " + data.logged_in);
             self.add_profile();
             enumerate(self.vue.profile);
-            console.log(self.vue.profile);
+            //console.log(self.vue.profile);
         })
     };
 
@@ -714,7 +714,7 @@ var app = function () {
     };
 
     self.add_profile = function () {
-        console.log(self.vue.logged_in);
+        //console.log(self.vue.logged_in);
         if (self.vue.logged_in == true) {
             $.post(add_profile_url,
                 {
@@ -733,9 +733,8 @@ var app = function () {
 
     };
 
-    setPage = function (page) {
-        self.vue.page = page;
-        switch (page) {
+    setPageHelper = function (page) {
+        switch (self.vue.page) {
             case 'test':
                 testStaff();
                 break;
@@ -746,9 +745,39 @@ var app = function () {
                 lesson1_1();
                 break;
             default:
+                self.vue.page = page;
                 break;
         }
     };
+
+    setPage = function (page) {
+        setPageHelper (page, {
+            onsuccess: function (page) {
+                switch (page) {
+                case 'test':
+                    testStaff();
+                    break;
+                case 'lesson':
+                    switch (self.vue.chapter) {
+                        case 1:
+                            switch (self.vue.lesson) {
+                                case 1:
+                                    lesson1_1();
+                                    break;
+                                default:
+                                    break;
+                            }
+                        break;
+                        default:
+                            break;
+                    }
+                    break;
+                default:
+                    break;
+                }
+            }
+        });
+    }
 
     self.vue = new Vue({
         el: "#vue-div",
@@ -783,8 +812,8 @@ var app = function () {
     });
 
     self.get_profiles();
-    $("#vue-div").show();
     $("#vue-link").show();
+    $("#vue-div").show();
 
 
     return self;
