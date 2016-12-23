@@ -734,8 +734,9 @@ var app = function () {
     };
 
     setPageHelper = function (page) {
-        switch (self.vue.page) {
+        switch (page) {
             case 'test':
+                self.vue.page = page;
                 testStaff();
                 break;
             case 'lesson1_1':
@@ -751,7 +752,7 @@ var app = function () {
     };
 
     setPage = function (page) {
-        setPageHelper (page, {
+        setPageHelper (page/*, {
             onsuccess: function (page) {
                 switch (page) {
                 case 'test':
@@ -776,7 +777,7 @@ var app = function () {
                     break;
                 }
             }
-        });
+        }*/);
     }
 
     self.vue = new Vue({
