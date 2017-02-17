@@ -1,5 +1,6 @@
 \documentclass[24pt]{beamer}
 \usetheme{CambridgeUS}
+\usepackage[normalem]{ulem}
 
 \title{M$\mu$tor}
 \author{Jimi Bove jebove@ucsc.edu, Darion Toney dtoney@ucsc.edu}
@@ -31,10 +32,9 @@
 \begin{frame}
 \frametitle{Bugs}
 \begin{itemize}
-  \item Music won't play perfectly in rhythm
-  \item Music plays all notes at once after the first playing until refresh
-  \item Staff notation doesn't show up until the link to it is clicked twice
-  \item All are bugs with the libraries used for music notation and MIDI playback with Javascript (or, in the last bug's case, a problem with mixing said libraries with vue.js), not caused by us and not present in their own examples (which we used as reference)
+  \item \sout{Music won't play perfectly in rhythm}
+  \item \sout{Music plays all notes at once after the first playing until refresh}
+  \item Staff notation doesn't show up until the link to it is clicked twice (a problem with mixing VexFlow with vue.js that has no error message or obvious cause)
   \item Countless other bugs that we've already fixed
 \end{itemize}
 \end{frame}
